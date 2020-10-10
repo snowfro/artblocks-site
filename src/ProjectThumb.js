@@ -138,7 +138,7 @@ async updateTokens(){
         <Col>
         <CardDeck className="col d-flex justify-content-center">
 
-          <Card className='mt-4' style={{ width: '12rem' }} >
+          <Card className='mt-4' style={{ width: '20rem' }} >
             <Card.Header as="h5">{this.state.projectDescription && this.state.projectDescription[0]} #{Number(this.state.randomToken)-Number(this.props.project)*1000000} {owned?"(yours)":""}</Card.Header>
             <Card.Body>
             {this.state.randomToken &&

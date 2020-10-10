@@ -1,5 +1,5 @@
 import React, { Component} from 'react'
-import {Card, Button, CardDeck, Alert,Spinner} from 'react-bootstrap';
+import {Card, Button, CardDeck, Alert,Spinner,Col} from 'react-bootstrap';
 
 
 class Project extends Component {
@@ -83,7 +83,7 @@ class Project extends Component {
       </button>
 
       <div className="row">
-      <div className="col-3">
+      <Col sm={3}>
       <div className="sticky-top">
       <div className="text-align-center">
       <br />
@@ -94,6 +94,9 @@ class Project extends Component {
       <h3>by {this.state.projectDescription && this.state.projectDescription[1]}</h3>
       <a href={this.state.projectDescription && this.state.projectDescription[2]}>{this.state.projectDescription && this.state.projectDescription[2]}</a>
       <p>Total Minted: {this.state.projectTokens && this.state.projectTokens.length} / {this.state.projectTokenDetails && this.state.projectTokenDetails[3]} max</p>
+      <p>Each image represents a unique work that combines the generative script created by the artist with a randomly generated string of characters stored on the NFT/token.
+      These images are static and generated upon minting of the token. Click the button below each image to access the live script where the output is generated in real time in your browser!</p>
+      <p>When you purchase an iteration of this project you are minting a new token with it's own randomly generated string which will produce your own unique version of the work.</p>
       <p>Price per token: {this.state.projectTokenDetails && this.state.web3.utils.fromWei(this.state.projectTokenDetails[1],'ether')}Ξ</p>
       <br />
       <br />
@@ -114,25 +117,27 @@ class Project extends Component {
 
 </div>
 </div>
-</div>
+</Col>
 
-  <div className="col">
+  <Col>
 
-        <CardDeck className="col d-flex justify-content-center">
+        <CardDeck className="col">
         {this.state.projectTokens && this.state.projectTokens.map((token,index)=>{
           return (
           <div key={index}>
+          <Col>
           <Card border="light" className='mt-4' style={{ width: '12rem' }} >
             <Card.Body>
             {this.state.loadQueue<token?<div className="spinner-border" role="status">
             <span className="sr-only">Loading...</span>
-            </div>:<Card.Img variant="top" src={tokenImage(token)} onLoad={this.handleNextImage}/>}
+            </div>:<Card.Img src={tokenImage(token)} onLoad={this.handleNextImage}/>}
             <div className="text-center">
-            <Button variant="light btn-block" onClick={()=> window.open(tokenGenerator(token), "_blank")}>#{Number(token)-Number(this.props.project)*1000000}</Button>
+            <Button variant="light btn-block mt-1" onClick={()=> window.open(tokenGenerator(token), "_blank")}>#{Number(token)-Number(this.props.project)*1000000}</Button>
             </div>
 
             </Card.Body>
             </Card>
+            </Col>
             </div>
 
         )})
@@ -142,7 +147,7 @@ class Project extends Component {
         <div className="text-center">
         <button className='btn-light btn-sm' onClick={() => this.props.handleToggleView("overview")}>Go Back</button>
         </div>
-        </div>
+        </Col>
 
 
       </div>

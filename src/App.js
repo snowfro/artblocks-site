@@ -6,6 +6,7 @@ import Web3 from 'web3'
 import Project from './Project';
 import NewToken from './NewToken';
 import ProjectThumb from './ProjectThumb';
+import {Col} from 'react-bootstrap';
 import './App.css'
 
 
@@ -111,7 +112,7 @@ class App extends Component {
       {this.state.overview &&
 
 
-      <div className="col-3">
+      <Col sm={3}>
       <div className="sticky-top">
       <div className="text-align-center">
       <br/>
@@ -156,7 +157,7 @@ class App extends Component {
     }
       </div>
 
-</div>
+</Col>
 }
 
       <div className="col">
