@@ -3,7 +3,8 @@
 import React, { Component } from 'react'
 import { ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS } from './config'
 import Web3 from 'web3'
-//import Project from './Project';
+import Project from './Project';
+import NewToken from './NewToken';
 import ProjectThumb from './ProjectThumb';
 import './App.css'
 
@@ -33,24 +34,70 @@ class App extends Component {
     });
       //this.loadBlockchainData();
   }
+
+  handleToggleView(input){
+    console.log(input);
+    if (input==="overview"){
+      this.setState({overview:true})
+    } else {
+      this.setState({overview:false, currentProject:input})
+    }
+  }
+
+  handleToggleTheaterView(input){
+    console.log(input);
+    if (input==="overview"){
+      this.setState({theater:false})
+    } else {
+      this.setState({theater:true, currentToken:input})
+    }
+  }
+
   constructor(props) {
     super(props)
-    this.state = { account: '', connected:false }
+    this.state = { account: '', connected:false, overview:true, currentProject:0, theater:false, currenttoken:0}
     this.handleConnectToMetaMask = this.handleConnectToMetaMask.bind(this);
+    this.handleToggleView = this.handleToggleView.bind(this);
+    this.handleToggleTheaterView = this.handleToggleTheaterView.bind(this);
   }
 
   render() {
+    console.log("Theater?:"+this.state.theater)
     //console.log(this.state);
     return (
-      <div className="container-fluid">
+
+
+
+      <div className="container-fluid mt-3">
+      <div>
+      {this.state.theater &&
+        <div>
+        <NewToken
+        project={this.state.currentProject}
+        token ={this.state.currentToken}
+        account = {this.state.account}
+        tokensOfOwner = {this.state.tokensOfOwner}
+        handleToggleTheaterView = {this.handleToggleTheaterView}
+        />
+        </div>
+      }
+      </div>
+
+      <div>
+      {!this.state.theater &&
 
 
       <div className="row">
+      {this.state.overview &&
+
+
       <div className="col-3">
       <div className="sticky-top">
       <div className="text-align-center">
       <br/>
       <br/>
+      <br/>
+    
       <h1 className="text-center">Art Blocks [Rinkeby]</h1>
       </div>
       {this.state.connected===false &&
@@ -85,11 +132,12 @@ class App extends Component {
       </div>
 
 </div>
+}
 
       <div className="col">
 
 
-        {this.state.activeProjects && 
+        {this.state.activeProjects && this.state.overview &&
           this.state.activeProjects.map((project,index)=>{
           return(
             <div key={index}>
@@ -99,20 +147,31 @@ class App extends Component {
           project ={project}
           account = {this.state.account}
           tokensOfOwner = {this.state.tokensOfOwner}
+          handleToggleView = {this.handleToggleView}
           />
-
           </div>
         )
         })
       }
 
+      {this.state.activeProjects && !this.state.overview &&
 
-
-
+        <Project
+        project ={this.state.currentProject}
+        account = {this.state.account}
+        handleToggleView = {this.handleToggleView}
+        connected = {this.state.connected}
+        handleToggleTheaterView = {this.handleToggleTheaterView}
+        />
+      }
 
       </div>
       </div>
+    }
+    </div>
       </div>
+
+
 
     );
   }

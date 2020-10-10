@@ -59,8 +59,9 @@ handlePreviousToken(){
 }
 
 async updateTokens(){
-
-  const projectTokens = await this.state.artBlocks.methods.project_ShowAllTokens(this.props.project).call();
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
+  const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+  const projectTokens = await artBlocks.methods.project_ShowAllTokens(this.props.project).call();
   this.setState({projectTokens:projectTokens});
 }
 
@@ -132,14 +133,14 @@ async updateTokens(){
         <br />
         <p> Displaying token #{this.state.randomToken && this.state.randomToken}</p>
         <br/>
-        <button className='btn-light btn-sm' onClick={() => this.props.handleToggleView(this.props.project)}>Visit Gallery</button>
+        <button className='btn-light btn-lg' onClick={this.purchase} disabled={this.props.account?false:true}>Purchase</button>
 
         </Col>
         <Col>
         <CardDeck className="col d-flex justify-content-center">
 
           <Card className='mt-4' style={{ width: '12rem' }} >
-            <Card.Header as="h5">{this.state.projectDescription && this.state.projectDescription[0]} #{Number(this.state.randomToken)-Number(this.props.project)*1000000} {owned?"(yours)":""}</Card.Header>
+            <Card.Header as="h5">{this.state.projectDescription && this.state.projectDescription[0]} #{this.state.randomToken} {owned?"(yours)":""}</Card.Header>
             <Card.Body>
             {this.state.randomToken &&
             <Card.Img variant="top" src={tokenImage(this.state.randomToken)}/>
