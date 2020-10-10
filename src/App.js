@@ -8,16 +8,32 @@ import NewToken from './NewToken';
 import ProjectThumb from './ProjectThumb';
 import './App.css'
 
+
+
+const API_KEY = process.env.REACT_APP_INFURA_KEY;
+
 class App extends Component {
   async componentDidMount() {
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-    const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
-    const activeProjects = await artBlocks.methods.platform_ShowAllProjectIds().call();
-    const totalInvocations = await artBlocks.methods.totalSupply().call();
-    this.setState({ activeProjects });
-    this.setState({artBlocks});
-    this.setState({web3});
-    this.setState({totalInvocations});
+    if (typeof web3 !== "undefined"){
+      const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
+      const network = await web3.eth.net.getNetworkType()
+      console.log(network);
+      const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+      if (network !== "rinkeby"){
+        alert("please change network to Rinkeby and press OK");
+        window.location.reload(false);
+      } else {
+      const activeProjects = await artBlocks.methods.platform_ShowAllProjectIds().call();
+      const totalInvocations = await artBlocks.methods.totalSupply().call();
+      this.setState({artBlocks, web3, activeProjects, totalInvocations, network});
+    }
+    } else {
+      const web3 = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${API_KEY}`));
+      const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+      const activeProjects = await artBlocks.methods.platform_ShowAllProjectIds().call();
+      const totalInvocations = await artBlocks.methods.totalSupply().call();
+      this.setState({artBlocks, web3, activeProjects, totalInvocations, network:"none"});
+    }
   }
 
   async loadAccountData() {
@@ -27,11 +43,16 @@ class App extends Component {
   }
 
   handleConnectToMetaMask(){
+    if (this.state.network==="rinkeby"){
     window.ethereum.request({method:'eth_requestAccounts'}).then(result=>{
       console.log(result);
       this.setState({connected:true});
       this.loadAccountData();
     });
+  } else {
+    alert("please switch to rinkeby network then press OK");
+    window.location.reload(false);
+  }
       //this.loadBlockchainData();
   }
 
@@ -62,10 +83,9 @@ class App extends Component {
   }
 
   render() {
-    console.log("Theater?:"+this.state.theater)
-    //console.log(this.state);
+    //console.log("Theater?:"+this.state.theater)
+    console.log(this.state.network && this.state.network);
     return (
-
 
 
       <div className="container-fluid mt-3">
@@ -97,12 +117,17 @@ class App extends Component {
       <br/>
       <br/>
       <br/>
-    
+
       <h1 className="text-center">Art Blocks [Rinkeby]</h1>
       </div>
-      {this.state.connected===false &&
+      {this.state.connected===false && this.state.network!=="none" &&
       <button className="btn btn-primary btn-xsmall btn-block" onClick={this.handleConnectToMetaMask}> Connect to Metamask </button>
     }
+    {this.state.connected===false && this.state.network==="none" &&
+    <div>
+    <p>This is a project powered by Ethereum. Please install <a href="https://metamask.io">MetaMask</a> for the full experience.</p>
+    </div>
+  }
     {this.state.connected===true &&
       <div>
     <p className="text-center"><small>Acct: {this.state.account}</small></p>
@@ -148,6 +173,9 @@ class App extends Component {
           account = {this.state.account}
           tokensOfOwner = {this.state.tokensOfOwner}
           handleToggleView = {this.handleToggleView}
+          web3 = {this.state.web3}
+          artBlocks = {this.state.artBlocks}
+          network = {this.state.network}
           />
           </div>
         )
@@ -162,6 +190,9 @@ class App extends Component {
         handleToggleView = {this.handleToggleView}
         connected = {this.state.connected}
         handleToggleTheaterView = {this.handleToggleTheaterView}
+        web3 = {this.state.web3}
+        artBlocks = {this.state.artBlocks}
+        network = {this.state.network}
         />
       }
 

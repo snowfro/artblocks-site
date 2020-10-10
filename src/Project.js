@@ -1,6 +1,4 @@
 import React, { Component} from 'react'
-import { ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS } from './config'
-import Web3 from 'web3'
 import {Card, Button, CardDeck, Alert,Spinner} from 'react-bootstrap';
 
 
@@ -16,15 +14,15 @@ class Project extends Component {
 
   async componentDidMount() {
 
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-    const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+    const web3 = this.props.web3;
+    const artBlocks = this.props.artBlocks;
+    const network = this.props.network;
     const projectTokens = await artBlocks.methods.project_ShowAllTokens(this.props.project).call();
     const projectDescription = await artBlocks.methods.details_ProjectDescription(this.props.project).call();
     const projectTokenDetails = await artBlocks.methods.details_ProjectTokenInfo(this.props.project).call();
     const projectScriptDetails = await artBlocks.methods.details_ProjectScriptInfo(this.props.project).call();
     const projectURIInfo = await artBlocks.methods.details_ProjectURIInfo(this.props.project).call();
-    this.setState({web3,artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo});
-
+    this.setState({web3,artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, network});
   }
 
 
@@ -34,11 +32,10 @@ class Project extends Component {
   }
 
   async purchase() {
-    //this.setState({ loading: true })
     this.setState({purchase:true});
     await this.state.artBlocks.methods.purchase(this.props.project).send({
       from:this.props.account,
-      value:100000000000000000
+      value:this.state.projectTokenDetails[1]
     })
     .once('receipt', (receipt) => {
       const mintedToken = receipt.events.Mint.returnValues[1];
@@ -48,7 +45,6 @@ class Project extends Component {
 })
 .catch(err => this.setState({purchase:false}));
 
-//this.props.handleToggleTheaterView(7000000);
 }
 
   handleNextImage(){
@@ -60,10 +56,9 @@ class Project extends Component {
 
   render() {
 
-    console.log(this.props);
-    //console.log(this.state.web3);
-    let queue = this.state.loadQueue;
-    //const handleNext = this.handleNextImage;
+
+
+    //console.log(this.state.projectTokenDetails && this.state.projectTokenDetails[1]);
 
     function tokenImage(token){
       return 'https://abtest-11808.nodechef.com/image/'+token;
@@ -75,17 +70,15 @@ class Project extends Component {
       //return 'http://localhost:8080/generator/'+token;
     }
 
-    if (this.state.projectURIInfo){
-      console.log('URI '+ this.state.projectURIInfo[0]);
-    }
 
 
 
-    console.log(queue);
+
+    //console.log(queue);
     return (
 
       <div className="container mt-5">
-      <button type="button" onClick={() => this.props.handleToggleView("overview")} class="close" aria-label="Close">
+      <button type="button" onClick={() => this.props.handleToggleView("overview")} className="close" aria-label="Close">
       <span aria-hidden="true">&times;</span>
       </button>
 
@@ -104,9 +97,9 @@ class Project extends Component {
       <p>Price per token: {this.state.projectTokenDetails && this.state.web3.utils.fromWei(this.state.projectTokenDetails[1],'ether')}Ξ</p>
       <br />
       <br />
-      {!this.props.connected &&
+      {!this.props.connected && this.state.network!=="none" &&
 
-        <Alert variant='dark'>Please go back and click "Connect to Metamask" to enable purchases.</Alert>
+        <Alert variant='dark'>Please <Button variant="btn btn-link" style={{padding:"0px"}} onClick={() => this.props.handleToggleView("overview")}>go back</Button> and click "Connect to Metamask" to enable purchases.</Alert>
       }
       {this.props.connected &&
       <button className='btn-primary btn-sm' onClick={this.purchase}>{this.state.purchase?<div><Spinner

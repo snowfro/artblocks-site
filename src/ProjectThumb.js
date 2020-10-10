@@ -1,9 +1,6 @@
 import React, { Component} from 'react'
-import { ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS } from './config'
-import Web3 from 'web3'
 import {Card, Button, CardDeck, Row, Col} from 'react-bootstrap';
 import './ProjectThumb.css';
-
 
 class Project extends Component {
   constructor(props) {
@@ -15,8 +12,11 @@ class Project extends Component {
   }
 
   async componentDidMount() {
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-    const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+    const web3 = this.props.web3;
+    //const web3 = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${API_KEY}`));
+    //const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
+    //const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+    const artBlocks = this.props.artBlocks;
     const projectTokens = await artBlocks.methods.project_ShowAllTokens(this.props.project).call();
     const projectDescription = await artBlocks.methods.details_ProjectDescription(this.props.project).call();
     const projectTokenDetails = await artBlocks.methods.details_ProjectTokenInfo(this.props.project).call();
