@@ -5,9 +5,8 @@ import {Card, Button, CardDeck, Alert,Spinner,Col} from 'react-bootstrap';
 class Project extends Component {
   constructor(props) {
     super(props)
-    this.state = {loadQueue:this.props.project*1000000, account:'', tokenURIInfo:'', purchase:false};
+    this.state = {loadQueue:this.props.project*1000000, account:'', tokenURIInfo:'', purchase:false, project:this.props.project};
     this.handleNextImage = this.handleNextImage.bind(this);
-    this.updateTokens = this.updateTokens.bind(this);
     this.purchase = this.purchase.bind(this);
     //this.handleToggleTheaterView = handleToggleTheaterView.bind(this);
   }
@@ -25,11 +24,20 @@ class Project extends Component {
     this.setState({web3,artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, network});
   }
 
+async componentDidUpdate(oldProps){
+  if (oldProps.project !== this.props.project){
+    console.log('change');
+  let artBlocks = this.state.artBlocks;
+  const projectTokens = await artBlocks.methods.project_ShowAllTokens(this.props.project).call();
+  const projectDescription = await artBlocks.methods.details_ProjectDescription(this.props.project).call();
+  const projectTokenDetails = await artBlocks.methods.details_ProjectTokenInfo(this.props.project).call();
+  const projectScriptDetails = await artBlocks.methods.details_ProjectScriptInfo(this.props.project).call();
+  const projectURIInfo = await artBlocks.methods.details_ProjectURIInfo(this.props.project).call();
+  this.setState({loadQueue:this.props.project*1000000,projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo});
+}
+}
 
-  async updateTokens(){
-    const projectTokens = await this.state.artBlocks.methods.project_ShowAllTokens(this.props.project).call();
-    this.setState({projectTokens});
-  }
+
 
   async purchase() {
     this.setState({purchase:true});
@@ -61,12 +69,12 @@ class Project extends Component {
     //console.log(this.state.projectTokenDetails && this.state.projectTokenDetails[1]);
 
     function tokenImage(token){
-      return 'https://abtest-11808.nodechef.com/image/'+token;
+      return 'https://api.artblocks.io/image/'+token;
       //return 'http://localhost:8080/image/'+token;
     }
 
     function tokenGenerator(token){
-      return 'https://abtest-11808.nodechef.com/generator/'+token;
+      return 'https://api.artblocks.io/generator/'+token;
       //return 'http://localhost:8080/generator/'+token;
     }
 
@@ -78,10 +86,6 @@ class Project extends Component {
     return (
 
       <div className="container mt-5">
-      <button type="button" onClick={() => this.props.handleToggleView("overview")} className="close" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-      </button>
-
       <div className="row">
       <Col sm={3}>
       <div className="sticky-top">
@@ -102,7 +106,7 @@ class Project extends Component {
       <br />
       {!this.props.connected && this.state.network!=="none" &&
 
-        <Alert variant='dark'>Please <Button variant="btn btn-link" style={{padding:"0px"}} onClick={() => this.props.handleToggleView("overview")}>go back</Button> and click "Connect to Metamask" to enable purchases.</Alert>
+        <Alert variant='dark'>Please click "Connect to Metamask" to enable purchases.</Alert>
       }
       {this.props.connected &&
       <button className='btn-primary btn-sm' onClick={this.purchase}>{this.state.purchase?<div><Spinner
@@ -147,6 +151,7 @@ class Project extends Component {
         <div className="text-center">
         <button className='btn-light btn-sm' onClick={() => this.props.handleToggleView("overview")}>Go Back</button>
         </div>
+
         </Col>
 
 

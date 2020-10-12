@@ -4,9 +4,11 @@ import React, { Component } from 'react'
 import { ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS } from './config'
 import Web3 from 'web3'
 import Project from './Project';
+import Highlight from './Highlight';
 import NewToken from './NewToken';
-import ProjectThumb from './ProjectThumb';
-import {Col} from 'react-bootstrap';
+import Navigation from './Nav';
+import ProjectGallery from './ProjectGallery';
+import {Col,Row} from 'react-bootstrap';
 import './App.css'
 
 
@@ -26,14 +28,14 @@ class App extends Component {
       } else {
       const activeProjects = await artBlocks.methods.platform_ShowAllProjectIds().call();
       const totalInvocations = await artBlocks.methods.totalSupply().call();
-      this.setState({artBlocks, web3, activeProjects, totalInvocations, network});
+      this.setState({artBlocks, web3, activeProjects, totalInvocations, network, currentProject:Math.floor(Math.random()*activeProjects.length)});
     }
     } else {
       const web3 = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${API_KEY}`));
       const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
       const activeProjects = await artBlocks.methods.platform_ShowAllProjectIds().call();
       const totalInvocations = await artBlocks.methods.totalSupply().call();
-      this.setState({artBlocks, web3, activeProjects, totalInvocations, network:"none"});
+      this.setState({artBlocks, web3, activeProjects, totalInvocations, network:"none", currentProject:Math.floor(Math.random()*activeProjects.length)});
     }
   }
 
@@ -43,7 +45,7 @@ class App extends Component {
     this.setState({ account: accounts[0], tokensOfOwner });
   }
 
-  handleConnectToMetaMask(){
+  handleConnectToMetamask(){
     if (this.state.network==="rinkeby"){
     window.ethereum.request({method:'eth_requestAccounts'}).then(result=>{
       console.log(result);
@@ -57,12 +59,22 @@ class App extends Component {
       //this.loadBlockchainData();
   }
 
-  handleToggleView(input){
+  handleNextProject(){
+    //let currentProject = this.state.currentProject;
+    let newProject = Math.floor(Math.random()*this.state.activeProjects.length);
+    this.setState({currentProject:newProject});
+  }
+
+  handleToggleView(input,project){
     console.log(input);
-    if (input==="overview"){
-      this.setState({overview:true})
-    } else {
-      this.setState({overview:false, currentProject:input})
+    if (input==="highlight"){
+      this.setState({show:"highlight"})
+    } else if (input==="gallery"){
+      this.setState({show:"gallery", currentProject:project})
+      console.log("newproject"+input);
+    } else if (input==="project"){
+      this.setState({show:"project", currentProject:project})
+      console.log("newproject"+input);
     }
   }
 
@@ -77,20 +89,40 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { account: '', connected:false, overview:true, currentProject:0, theater:false, currenttoken:0}
-    this.handleConnectToMetaMask = this.handleConnectToMetaMask.bind(this);
+    this.state = { account: '', connected:false, show:"highlight", currentProject:0, theater:false, currenttoken:0}
+    this.handleConnectToMetamask = this.handleConnectToMetamask.bind(this);
     this.handleToggleView = this.handleToggleView.bind(this);
+    this.handleNextProject = this.handleNextProject.bind(this);
     this.handleToggleTheaterView = this.handleToggleTheaterView.bind(this);
   }
 
   render() {
     //console.log("Theater?:"+this.state.theater)
+    console.log("currentProject"+this.state.currentProject);
     console.log(this.state.network && this.state.network);
     return (
 
+      <div className="container">
 
-      <div className="container-fluid mt-3">
       <div>
+      {this.state.activeProjects &&
+      <Navigation
+      web3 = {this.state.web3}
+      artBlocks = {this.state.artBlocks}
+      handleToggleView = {this.handleToggleView}
+      activeProjects = {this.state.activeProjects}
+      handleConnectToMetamask = {this.handleConnectToMetamask}
+      connected = {this.state.connected}
+      network = {this.state.network}
+      account = {this.state.account}
+      />
+      }
+      </div>
+
+
+
+
+      <div className="container mt-5">
       {this.state.theater &&
         <div>
         <NewToken
@@ -102,53 +134,27 @@ class App extends Component {
         />
         </div>
       }
-      </div>
 
-      <div>
+
+
       {!this.state.theater &&
+        <div>
 
-
-      <div className="row">
-      {this.state.overview &&
-
-
-      <Col sm={3}>
-      <div className="sticky-top">
-      <div className="text-align-center">
-      <br/>
-      <br/>
-      <br/>
-
-      <h1 className="text-center">Art Blocks [Rinkeby]</h1>
-      </div>
-      {this.state.connected===false && this.state.network!=="none" &&
-      <button className="btn btn-primary btn-xsmall btn-block" onClick={this.handleConnectToMetaMask}> Connect to Metamask </button>
-    }
-    {this.state.connected===false && this.state.network==="none" &&
-    <div>
-    <p>This is a project powered by Ethereum. Please install <a href="https://metamask.io">MetaMask</a> for the full experience.</p>
-    </div>
-  }
-    {this.state.connected===true &&
+      {
+/*
+        this.state.show==="highlight" &&
       <div>
-    <p className="text-center"><small>Acct: {this.state.account}</small></p>
-
-    </div>
-  }
-      <hr/>
-      <br />
       <h6>There are a total of <b>{this.state.activeProjects && this.state.activeProjects.length}</b> projects currently listed on the platform.</h6>
 
-      <br/>
+
       <h6><b>{this.state.totalInvocations && this.state.totalInvocations}</b> unique generative iterations have been minted to date.</h6>
 
-      <br/>
+
       <h6>Each image on the right represents a snapshot of a previously purchased generative work of art. Click <b>next/previous</b> to see more examples or click <b>open</b> to access the live script directly. </h6>
-      <br/>
+
       <h6>Generative outputs result from a script stored on the Art Blocks platform seeded by a unique injected hash that is stored on each purchased token. Artworks are determinsitic and the results are immutable.</h6>
-      <br/>
+
       <h6>When you purchase an Art Blocks work of art you are minting a never before seen iteration resulting from an artist's generative script.</h6>
-      <br/>
       {this.state.connected===true &&
         <div>
       <h6>You own the following tokens:</h6>
@@ -157,17 +163,37 @@ class App extends Component {
     }
       </div>
 
-</Col>
-}
 
-      <div className="col">
+*/}
+
+      {this.state.activeProjects && this.state.show==="highlight" &&
+
+      <Row className="align-items-center">
+
+      <Col>
+
+        <Highlight
+        project ={this.state.currentProject}
+        account = {this.state.account}
+        tokensOfOwner = {this.state.tokensOfOwner}
+        handleToggleView = {this.handleToggleView}
+        web3 = {this.state.web3}
+        artBlocks = {this.state.artBlocks}
+        network = {this.state.network}
+        handleNextProject = {this.handleNextProject}
+        />
+
+        </Col>
+        </Row>
 
 
-        {this.state.activeProjects && this.state.overview &&
+      }
+
+        {this.state.activeProjects && this.state.show==="gallery" &&
           this.state.activeProjects.map((project,index)=>{
           return(
             <div key={index}>
-          <ProjectThumb
+          <ProjectGallery
           background={index%2===1?0:1}
           key={index}
           project ={project}
@@ -183,7 +209,7 @@ class App extends Component {
         })
       }
 
-      {this.state.activeProjects && !this.state.overview &&
+      {this.state.activeProjects && this.state.show==="project" &&
 
         <Project
         project ={this.state.currentProject}
@@ -196,12 +222,11 @@ class App extends Component {
         network = {this.state.network}
         />
       }
-
-      </div>
       </div>
     }
     </div>
-      </div>
+    </div>
+
 
 
 

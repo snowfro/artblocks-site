@@ -1,21 +1,17 @@
 import React, { Component} from 'react'
 import {Card, Button, CardDeck, Row, Col} from 'react-bootstrap';
-import './ProjectThumb.css';
+import './ProjectGallery.css';
 
-class Project extends Component {
+class ProjectGallery extends Component {
   constructor(props) {
     super(props)
     this.state = {tokenURIInfo:''};
-    this.purchase = this.purchase.bind(this);
     this.handleNextToken = this.handleNextToken.bind(this);
     this.handlePreviousToken = this.handlePreviousToken.bind(this);
   }
 
   async componentDidMount() {
     const web3 = this.props.web3;
-    //const web3 = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${API_KEY}`));
-    //const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-    //const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
     const artBlocks = this.props.artBlocks;
     const projectTokens = await artBlocks.methods.project_ShowAllTokens(this.props.project).call();
     const projectDescription = await artBlocks.methods.details_ProjectDescription(this.props.project).call();
@@ -65,23 +61,6 @@ async updateTokens(){
 }
 
 
-  async purchase() {
-    //this.setState({ loading: true })
-    await this.state.artBlocks.methods.purchase(this.props.project).send({
-      from:this.props.account,
-      value:100000000000000000
-    })
-    .once('receipt', (receipt) => {
-      const mintedToken = receipt.events.Mint.returnValues[1];
-      console.log(receipt.events.Mint.returnValues[1]);
-      this.updateTokens();
-      this.setState({randomToken:mintedToken});
-      //window.open("https://abtest-11808.nodechef.com/generator/"+mintedToken, "_blank");
-})
-
-}
-
-
 
   render() {
 
@@ -99,13 +78,13 @@ async updateTokens(){
 
 
     function tokenImage(token){
-      return 'https://abtest-11808.nodechef.com/image/'+token;
+      return 'https://api.artblocks.io/image/'+token;
 
       //return 'http://localhost:8080/image/'+token;
     }
 
     function tokenGenerator(token){
-      return 'https://abtest-11808.nodechef.com/generator/'+token;
+      return 'https://api.artblocks.io/generator/'+token;
       //return 'http://localhost:8080/generator/'+token.toString();
     }
 
@@ -132,7 +111,7 @@ async updateTokens(){
         <br />
         <p> Displaying token #{this.state.randomToken && this.state.randomToken}</p>
         <br/>
-        <button className='btn-light btn-sm' onClick={() => this.props.handleToggleView(this.props.project)}>Visit Gallery</button>
+        <button className='btn-light btn-sm' onClick={() => this.props.handleToggleView("project",this.props.project)}>Visit Gallery</button>
 
         </Col>
         <Col>
@@ -166,4 +145,4 @@ async updateTokens(){
   }
 }
 
-export default Project;
+export default ProjectGallery;

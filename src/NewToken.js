@@ -2,7 +2,7 @@ import React, { Component} from 'react'
 import { ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS } from './config'
 import Web3 from 'web3'
 import {Card, Button, CardDeck, Row, Col} from 'react-bootstrap';
-import './ProjectThumb.css';
+import './ProjectGallery.css';
 
 
 class Project extends Component {
@@ -24,24 +24,19 @@ class Project extends Component {
     this.setState({web3,artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo});
   }
 
-
-
-
-
   render() {
-
 
     console.log(this.props.tokensOfOwner && this.props.tokensOfOwner);
 
 
     function tokenImage(token){
-      return 'https://abtest-11808.nodechef.com/image/'+token;
+      return 'https://api.artblocks.io/image/'+token;
 
       //return 'http://localhost:8080/image/'+token;
     }
 
     function tokenGenerator(token){
-      return 'https://abtest-11808.nodechef.com/generator/'+token;
+      return 'https://api.artblocks.io/generator/'+token;
       //return 'http://localhost:8080/generator/'+token.toString();
     }
 
