@@ -48,9 +48,21 @@ class Navigation extends Component {
   }
 
   render() {
+    /*
+    function tokenImage(token){
+      //return 'https://api.artblocks.io/image/'+token;
+      return 'http://localhost:8080/image/'+token;
+    }
+    */
+
+    let baseURL = this.props.baseURL;
+
+    function tokenGenerator(token){
+      return baseURL+'/generator/'+token;
+    }
     //console.log("Theater?:"+this.state.theater)
     console.log(this.state.network && this.state.network);
-    let etherscanAddy = `https://etherscan.io/address/${this.props.account}`;
+    //let etherscanAddy = `https://etherscan.io/address/${this.props.account}`;
     return (
 
 
@@ -70,14 +82,22 @@ class Navigation extends Component {
                 })
               }
       </NavDropdown>
-      <Nav.Link href="#" onClick={()=>{this.props.handleToggleView("gallery",0)}}>Info</Nav.Link>
+      {/*<Nav.Link href="#" onClick={()=>{this.props.handleToggleView("gallery",0)}}>Info</Nav.Link>*/}
       </Nav>
       </Navbar.Collapse>
       {this.props.connected===false && this.props.network!=="none" &&
         <Nav.Link onClick={this.props.handleConnectToMetamask} href="#">Connect to Metamask</Nav.Link>
       }
       {this.props.account &&
-        <Nav.Link  href={etherscanAddy} target="_blank">{this.props.account.slice(0,9)}</Nav.Link>
+        <NavDropdown title={this.props.account.slice(0,9)} id="basic-nav-dropdown">
+          <NavDropdown.Item>{this.props.tokensOfOwner.length===0?"No Tokens":"Your Tokens"}</NavDropdown.Item>
+            {this.props.tokensOfOwner &&
+              this.props.tokensOfOwner.map((token, index)=>{
+                return(
+                  <NavDropdown.Item key={index} href={tokenGenerator(token)} target="_blank">{token}</NavDropdown.Item>
+                )
+              })}
+        </NavDropdown>
       }
       {this.props.connected===false && this.props.network==="none" &&
 

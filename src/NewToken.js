@@ -26,32 +26,27 @@ class Project extends Component {
 
   render() {
 
-    console.log(this.props.tokensOfOwner && this.props.tokensOfOwner);
+    //console.log(this.props.tokensOfOwner && this.props.tokensOfOwner);
 
+
+    let baseURL = this.props.baseURL;
 
     function tokenImage(token){
-      return 'https://api.artblocks.io/image/'+token;
-
-      //return 'http://localhost:8080/image/'+token;
+      return baseURL+'/image/'+token;
     }
 
     function tokenGenerator(token){
-      return 'https://api.artblocks.io/generator/'+token;
-      //return 'http://localhost:8080/generator/'+token.toString();
+      return baseURL+'/generator/'+token;
     }
-
-
-
-
 
     return (
 
       <div className="container">
-      <button type="button" onClick={() => this.props.handleToggleTheaterView("overview")} class="close" aria-label="Close">
+      <button type="button" onClick={() => this.props.handleToggleView("project")} class="close" aria-label="Close">
       <span aria-hidden="true">&times;</span>
       </button>
       <Row>
-      <Col className="my-auto">
+      <Col xs={12} md={6} className="my-auto">
 
 
         <h1>Purchase complete!</h1>
@@ -67,7 +62,7 @@ class Project extends Component {
 
 
         </Col>
-        <Col xs={9}>
+        <Col xs={12} md={6}>
         <CardDeck className="col d-flex justify-content-center">
 
           <Card className='mt-4' style={{ width: '12rem' }} >

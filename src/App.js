@@ -7,6 +7,7 @@ import Project from './Project';
 import Highlight from './Highlight';
 import NewToken from './NewToken';
 import Navigation from './Nav';
+import Intro from './Intro';
 import ProjectGallery from './ProjectGallery';
 import {Col,Row} from 'react-bootstrap';
 import './App.css'
@@ -65,27 +66,22 @@ class App extends Component {
     this.setState({currentProject:newProject});
   }
 
-  handleToggleView(input,project){
-    console.log(input);
-    if (input==="highlight"){
+  handleToggleView(view,input){
+    console.log(view,input);
+    if (view==="highlight"){
       this.setState({show:"highlight"})
-    } else if (input==="gallery"){
-      this.setState({show:"gallery", currentProject:project})
+    } else if (view==="gallery"){
+      this.setState({show:"gallery", currentProject:input})
       console.log("newproject"+input);
-    } else if (input==="project"){
-      this.setState({show:"project", currentProject:project})
+    } else if (view==="project"){
+      this.setState({show:"project", currentProject:input})
       console.log("newproject"+input);
+    } else if (view==="theater"){
+      this.setState({show:"theater", currentToken:input})
     }
   }
 
-  handleToggleTheaterView(input){
-    console.log(input);
-    if (input==="overview"){
-      this.setState({theater:false})
-    } else {
-      this.setState({theater:true, currentToken:input})
-    }
-  }
+
 
   constructor(props) {
     super(props)
@@ -93,16 +89,20 @@ class App extends Component {
     this.handleConnectToMetamask = this.handleConnectToMetamask.bind(this);
     this.handleToggleView = this.handleToggleView.bind(this);
     this.handleNextProject = this.handleNextProject.bind(this);
-    this.handleToggleTheaterView = this.handleToggleTheaterView.bind(this);
+
   }
 
   render() {
+
+    let baseURL = "https://api.artblocks.io";
+
+    //let baseURL = "http://localhost:8080"
     //console.log("Theater?:"+this.state.theater)
-    console.log("currentProject"+this.state.currentProject);
-    console.log(this.state.network && this.state.network);
+    //console.log("currentProject"+this.state.currentProject);
+    //console.log(this.state.network && this.state.network);
     return (
 
-      <div className="container">
+      <div className="container-fluid">
 
       <div>
       {this.state.activeProjects &&
@@ -115,6 +115,8 @@ class App extends Component {
       connected = {this.state.connected}
       network = {this.state.network}
       account = {this.state.account}
+      tokensOfOwner={this.state.tokensOfOwner}
+      baseURL ={baseURL}
       />
       }
       </div>
@@ -122,22 +124,23 @@ class App extends Component {
 
 
 
-      <div className="container mt-5">
-      {this.state.theater &&
+      <div className="container-fluid">
+      {this.state.show==="theater" &&
         <div>
         <NewToken
         project={this.state.currentProject}
         token ={this.state.currentToken}
         account = {this.state.account}
         tokensOfOwner = {this.state.tokensOfOwner}
-        handleToggleTheaterView = {this.handleToggleTheaterView}
+        handleToggleView = {this.handleToggleTheaterView}
+        baseURL ={baseURL}
         />
         </div>
       }
 
 
 
-      {!this.state.theater &&
+      {this.state.show!=="theater" &&
         <div>
 
       {
@@ -167,26 +170,29 @@ class App extends Component {
 */}
 
       {this.state.activeProjects && this.state.show==="highlight" &&
-
-      <Row className="align-items-center">
-
-      <Col>
-
-        <Highlight
-        project ={this.state.currentProject}
-        account = {this.state.account}
-        tokensOfOwner = {this.state.tokensOfOwner}
-        handleToggleView = {this.handleToggleView}
-        web3 = {this.state.web3}
-        artBlocks = {this.state.artBlocks}
-        network = {this.state.network}
-        handleNextProject = {this.handleNextProject}
-        />
-
-        </Col>
-        </Row>
-
-
+        <div className="container-fluid mt-5">
+          <Intro
+            activeProjects={this.state.activeProjects}
+            totalInvocations={this.state.totalInvocations}
+          />
+        <div className="container mt-5">
+          <Row className="align-items-center">
+          <Col>
+            <Highlight
+              project ={this.state.currentProject}
+              account = {this.state.account}
+              tokensOfOwner = {this.state.tokensOfOwner}
+              handleToggleView = {this.handleToggleView}
+              web3 = {this.state.web3}
+              artBlocks = {this.state.artBlocks}
+              network = {this.state.network}
+              handleNextProject = {this.handleNextProject}
+              baseURL ={baseURL}
+            />
+          </Col>
+          </Row>
+        </div>
+        </div>
       }
 
         {this.state.activeProjects && this.state.show==="gallery" &&
@@ -203,6 +209,7 @@ class App extends Component {
           web3 = {this.state.web3}
           artBlocks = {this.state.artBlocks}
           network = {this.state.network}
+          baseURL ={baseURL}
           />
           </div>
         )
@@ -210,7 +217,7 @@ class App extends Component {
       }
 
       {this.state.activeProjects && this.state.show==="project" &&
-
+      <div >
         <Project
         project ={this.state.currentProject}
         account = {this.state.account}
@@ -220,7 +227,9 @@ class App extends Component {
         web3 = {this.state.web3}
         artBlocks = {this.state.artBlocks}
         network = {this.state.network}
+        baseURL ={baseURL}
         />
+        </div>
       }
       </div>
     }

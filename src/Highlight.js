@@ -19,7 +19,7 @@ class Highlight extends Component {
     const projectScriptDetails = await artBlocks.methods.details_ProjectScriptInfo(this.props.project).call();
     const projectURIInfo = await artBlocks.methods.details_ProjectURIInfo(this.props.project).call();
     const randomToken = projectTokens[Math.floor(Math.random()*projectTokens.length)];
-    this.setState({web3,artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, randomToken});
+    this.setState({web3,artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, randomToken, project:this.props.project});
   }
 
   async componentDidUpdate(oldProps){
@@ -32,7 +32,7 @@ class Highlight extends Component {
     const projectScriptDetails = await artBlocks.methods.details_ProjectScriptInfo(this.props.project).call();
     const projectURIInfo = await artBlocks.methods.details_ProjectURIInfo(this.props.project).call();
     const randomToken = projectTokens[Math.floor(Math.random()*projectTokens.length)];
-    this.setState({projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, randomToken});
+    this.setState({projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, randomToken, project:this.props.project});
   }
   }
 
@@ -74,28 +74,19 @@ handlePreviousToken(){
 
   render() {
 
-    //console.log(this.props);
-    //console.log(this.state.web3);
-    //console.log("acct: "+this.props.account);
-
-    console.log(this.state.randomToken && this.state.randomToken);
-    console.log(this.props.tokensOfOwner && this.props.tokensOfOwner);
-
-    let owned = this.state.randomToken && this.props.tokensOfOwner && this.props.tokensOfOwner.includes(this.state.randomToken.toString());
-
-      console.log("owned? "+ owned);
 
 
+
+    //let owned = this.state.randomToken && this.props.tokensOfOwner && this.props.tokensOfOwner.includes(this.state.randomToken.toString());
+
+    let baseURL = this.props.baseURL;
 
     function tokenImage(token){
-      return 'https://api.artblocks.io/image/'+token;
-
-      //return 'http://localhost:8080/image/'+token;
+      return baseURL+'/image/'+token;
     }
 
     function tokenGenerator(token){
-      return 'https://api.artblocks.io/generator/'+token;
-      //return 'http://localhost:8080/generator/'+token.toString();
+      return baseURL+'/generator/'+token;
     }
 
 /*
@@ -105,21 +96,24 @@ handlePreviousToken(){
 */
 
     return (
-      
+<div>
+{this.state.randomToken &&
   <Row className="align-items-center">
 
     <Col xs={12} md={6}>
     <a href={tokenGenerator(this.state.randomToken)} target="_blank" rel="noopener noreferrer">
-      <Image style={{width:"100%"}} src={tokenImage(this.state.randomToken)} rounded />
+      {this.state.randomToken &&
+        <Image style={{width:"100%"}} src={tokenImage(this.state.randomToken)} rounded />
+      }
       </a>
     </Col>
-    <Col xs={10} md={5}>
+    <Col xs={12} md={5}>
     <Container style={{border:"1px solid gray", borderRadius:"2px"}}>
     <div className="mt-2 mb-2">
     <h5>{this.state.projectDescription && this.state.projectDescription[0]}</h5>
     <h6>{this.state.projectDescription && this.state.projectDescription[1]}</h6>
     <br/>
-    <p>#{Number(this.state.randomToken)-Number(this.props.project)*1000000} of {this.state.projectTokens && this.state.projectTokens.length} minted ({this.state.projectTokenDetails && this.state.projectTokenDetails[3]} max)<span style={{"float":"right"}}>{this.state.projectTokenDetails && this.state.web3.utils.fromWei(this.state.projectTokenDetails[1],'ether')}Ξ</span></p>
+    <p>#{Number(this.state.randomToken)-Number(this.state.project)*1000000} of {this.state.projectTokens && this.state.projectTokens.length} minted ({this.state.projectTokenDetails && this.state.projectTokenDetails[3]} max)<span style={{"float":"right"}}>{this.state.projectTokenDetails && this.state.web3.utils.fromWei(this.state.projectTokenDetails[1],'ether')}Ξ</span></p>
 
     </div>
     </Container>
@@ -132,6 +126,10 @@ handlePreviousToken(){
     </Button>
     </Col>
   </Row>
+  }
+  <hr/>
+  <p className="text-center">The above image is static but projects can be dynamic or even interactive! Click the image to visit the live project.</p>
+  </div>
     );
   }
 }

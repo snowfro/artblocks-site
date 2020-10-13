@@ -77,16 +77,15 @@ async updateTokens(){
 
 
 
-    function tokenImage(token){
-      return 'https://api.artblocks.io/image/'+token;
+      let baseURL = this.props.baseURL;
 
-      //return 'http://localhost:8080/image/'+token;
-    }
+      function tokenImage(token){
+        return baseURL+'/image/'+token;
+      }
 
-    function tokenGenerator(token){
-      return 'https://api.artblocks.io/generator/'+token;
-      //return 'http://localhost:8080/generator/'+token.toString();
-    }
+      function tokenGenerator(token){
+        return baseURL+'/generator/'+token;
+      }
 
 /*
     if (this.state.projectURIInfo){
@@ -99,6 +98,8 @@ async updateTokens(){
     return (
 
       <div className="container">
+      {this.state.randomToken &&
+      <div>
       <Row>
       <Col className="my-auto">
 
@@ -140,7 +141,10 @@ async updateTokens(){
         </Row>
         <br/>
         <hr/>
+        </div>
+      }
       </div>
+
     );
   }
 }
