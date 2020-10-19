@@ -1,7 +1,7 @@
 //https://oneclickdapp.com/beast-powder/
 
 import React, { Component } from 'react'
-import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown, Image, Card} from 'react-bootstrap';
 
 class Navigation extends Component {
   async componentDidMount() {
@@ -48,17 +48,16 @@ class Navigation extends Component {
   }
 
   render() {
+    let baseURL = this.props.baseURL;
     /*
-    function tokenImage(token){
-      //return 'https://api.artblocks.io/image/'+token;
-      return 'http://localhost:8080/image/'+token;
+    function tokenGenerator(token){
+      return baseURL+'/generator/'+token;
     }
     */
 
-    let baseURL = this.props.baseURL;
-
-    function tokenGenerator(token){
-      return baseURL+'/generator/'+token;
+    function tokenImage(token){
+      //return 'https://api.artblocks.io/image/'+token;
+      return baseURL+'/image/'+token;
     }
     //console.log("Theater?:"+this.state.theater)
     console.log(this.state.network && this.state.network);
@@ -67,12 +66,12 @@ class Navigation extends Component {
 
 
       <div>
-      <Navbar fixed="top" bg="light">
+      <Navbar fixed="top" bg="light" expand="lg">
       <Navbar.Brand href="#" onClick={()=>{this.props.handleToggleView("highlight")}}>Art Blocks [Rinkeby]</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="#" onClick={()=>{this.props.handleToggleView("gallery",0)}}>Project Gallery</Nav.Link>
+          <Nav.Link href="#" onClick={()=>{this.props.handleToggleView("gallery",0)}}>Gallery</Nav.Link>
             <NavDropdown title="Projects" id="basic-nav-dropdown">
               {this.state.projects &&
                 this.state.projects.map((projectInfo,index)=>{
@@ -82,21 +81,40 @@ class Navigation extends Component {
                 })
               }
       </NavDropdown>
-      {/*<Nav.Link href="#" onClick={()=>{this.props.handleToggleView("gallery",0)}}>Info</Nav.Link>*/}
+
+      {<Nav.Link href="#" onClick={()=>{this.props.handleToggleView("learn",0)}}>Learn</Nav.Link>}
+
+      </Nav>
+      <Nav className="ml-auto">
+      {this.props.tokensOfOwner && <Nav.Link  href="#" onClick={()=>{this.props.handleToggleView("usergallery",0)}}>Your Items</Nav.Link>}
       </Nav>
       </Navbar.Collapse>
+
       {this.props.connected===false && this.props.network!=="none" &&
         <Nav.Link onClick={this.props.handleConnectToMetamask} href="#">Connect to Metamask</Nav.Link>
       }
       {this.props.account &&
-        <NavDropdown title={this.props.account.slice(0,9)} id="basic-nav-dropdown">
-          <NavDropdown.Item>{this.props.tokensOfOwner.length===0?"No Tokens":"Your Tokens"}</NavDropdown.Item>
+
+        <NavDropdown title={this.props.account.slice(0,9)} id="basic-nav-dropdown" >
+          <NavDropdown.Item >{this.props.tokensOfOwner.length===0?"No Tokens":"See Gallery"}</NavDropdown.Item>
+
             {this.props.tokensOfOwner &&
+
               this.props.tokensOfOwner.map((token, index)=>{
                 return(
-                  <NavDropdown.Item key={index} href={tokenGenerator(token)} target="_blank">{token}</NavDropdown.Item>
+
+                    <Card key={index} style={{ width: '8rem', border:"none" }} >
+                      <NavDropdown.Item   className="text-center" key={index}
+                        href={tokenImage(token)}
+                        target="_blank">
+                        <Image  className="d-block mx-auto img-fluid" alt="token" src={tokenImage(token)} fluid/>
+                        </NavDropdown.Item>
+                    </Card>
                 )
-              })}
+              })
+
+            }
+
         </NavDropdown>
       }
       {this.props.connected===false && this.props.network==="none" &&

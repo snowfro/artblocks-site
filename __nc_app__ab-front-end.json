@@ -186,13 +186,13 @@
     "path": "/Users/erick/apps/artblocks-site/public/robots.txt"
   },
   "src/App.css": {
-    "mt": "Sun Sep 20 2020 17:46:23 GMT-0500 (Central Daylight Time)",
+    "mt": "Mon Oct 12 2020 17:14:25 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site/src/App.css"
   },
   "src/App.js": {
-    "mt": "Sat Oct 10 2020 12:19:39 GMT-0500 (Central Daylight Time)",
+    "mt": "Mon Oct 19 2020 00:00:00 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site/src/App.js"
@@ -203,35 +203,65 @@
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site/src/App.test.js"
   },
+  "src/Highlight.js": {
+    "mt": "Tue Oct 13 2020 00:56:00 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site/src/Highlight.js"
+  },
+  "src/Intro.js": {
+    "mt": "Tue Oct 13 2020 00:55:17 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site/src/Intro.js"
+  },
+  "src/Learn.js": {
+    "mt": "Mon Oct 19 2020 00:00:13 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site/src/Learn.js"
+  },
+  "src/Nav.js": {
+    "mt": "Sun Oct 18 2020 22:34:31 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site/src/Nav.js"
+  },
   "src/NewToken.js": {
-    "mt": "Sun Oct 04 2020 22:34:34 GMT-0500 (Central Daylight Time)",
+    "mt": "Sun Oct 18 2020 12:58:07 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site/src/NewToken.js"
   },
   "src/Project.js": {
-    "mt": "Sat Oct 10 2020 12:43:25 GMT-0500 (Central Daylight Time)",
+    "mt": "Sun Oct 18 2020 22:22:42 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site/src/Project.js"
   },
-  "src/ProjectThumb.css": {
+  "src/ProjectGallery.css": {
     "mt": "Sun Sep 20 2020 17:51:58 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
-    "path": "/Users/erick/apps/artblocks-site/src/ProjectThumb.css"
+    "path": "/Users/erick/apps/artblocks-site/src/ProjectGallery.css"
   },
-  "src/ProjectThumb.js": {
-    "mt": "Sat Oct 10 2020 13:03:37 GMT-0500 (Central Daylight Time)",
+  "src/ProjectGallery.js": {
+    "mt": "Tue Oct 13 2020 00:52:27 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
-    "path": "/Users/erick/apps/artblocks-site/src/ProjectThumb.js"
+    "path": "/Users/erick/apps/artblocks-site/src/ProjectGallery.js"
   },
   "src/ProjectThumbOld.js": {
     "mt": "Sun Oct 04 2020 17:30:03 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site/src/ProjectThumbOld.js"
+  },
+  "src/UserGallery.js": {
+    "mt": "Sun Oct 18 2020 22:17:47 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site/src/UserGallery.js"
   },
   "src/config.js": {
     "mt": "Mon Sep 07 2020 16:19:44 GMT-0500 (Central Daylight Time)",

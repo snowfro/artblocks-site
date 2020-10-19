@@ -42,7 +42,7 @@ class Project extends Component {
     return (
 
       <div className="container">
-      <button type="button" onClick={() => this.props.handleToggleView("project")} class="close" aria-label="Close">
+      <button type="button" onClick={() => this.props.handleToggleView("project", this.props.project)} class="close" aria-label="Close">
       <span aria-hidden="true">&times;</span>
       </button>
       <Row>

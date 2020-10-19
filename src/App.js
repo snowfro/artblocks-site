@@ -9,6 +9,8 @@ import NewToken from './NewToken';
 import Navigation from './Nav';
 import Intro from './Intro';
 import ProjectGallery from './ProjectGallery';
+import UserGallery from './UserGallery';
+import Learn from './Learn';
 import {Col,Row} from 'react-bootstrap';
 import './App.css'
 
@@ -78,6 +80,10 @@ class App extends Component {
       console.log("newproject"+input);
     } else if (view==="theater"){
       this.setState({show:"theater", currentToken:input})
+    } else if (view==="usergallery"){
+      this.setState({show:"usergallery", currentToken:input})
+    } else if (view==="learn"){
+      this.setState({show:"learn", currentToken:input})
     }
   }
 
@@ -85,7 +91,7 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { account: '', connected:false, show:"highlight", currentProject:0, theater:false, currenttoken:0}
+    this.state = { account: '', connected:false, show:"highlight", currentProject:0, currenttoken:0}
     this.handleConnectToMetamask = this.handleConnectToMetamask.bind(this);
     this.handleToggleView = this.handleToggleView.bind(this);
     this.handleNextProject = this.handleNextProject.bind(this);
@@ -97,7 +103,7 @@ class App extends Component {
     let baseURL = "https://api.artblocks.io";
 
     //let baseURL = "http://localhost:8080"
-    //console.log("Theater?:"+this.state.theater)
+
     //console.log("currentProject"+this.state.currentProject);
     //console.log(this.state.network && this.state.network);
     return (
@@ -132,7 +138,7 @@ class App extends Component {
         token ={this.state.currentToken}
         account = {this.state.account}
         tokensOfOwner = {this.state.tokensOfOwner}
-        handleToggleView = {this.handleToggleTheaterView}
+        handleToggleView = {this.handleToggleView}
         baseURL ={baseURL}
         />
         </div>
@@ -140,34 +146,8 @@ class App extends Component {
 
 
 
-      {this.state.show!=="theater" &&
-        <div>
-
-      {
-/*
-        this.state.show==="highlight" &&
-      <div>
-      <h6>There are a total of <b>{this.state.activeProjects && this.state.activeProjects.length}</b> projects currently listed on the platform.</h6>
 
 
-      <h6><b>{this.state.totalInvocations && this.state.totalInvocations}</b> unique generative iterations have been minted to date.</h6>
-
-
-      <h6>Each image on the right represents a snapshot of a previously purchased generative work of art. Click <b>next/previous</b> to see more examples or click <b>open</b> to access the live script directly. </h6>
-
-      <h6>Generative outputs result from a script stored on the Art Blocks platform seeded by a unique injected hash that is stored on each purchased token. Artworks are determinsitic and the results are immutable.</h6>
-
-      <h6>When you purchase an Art Blocks work of art you are minting a never before seen iteration resulting from an artist's generative script.</h6>
-      {this.state.connected===true &&
-        <div>
-      <h6>You own the following tokens:</h6>
-      <p><b> <small>{this.state.tokensOfOwner && this.state.tokensOfOwner.join(', ')}</small></b></p>
-      </div>
-    }
-      </div>
-
-
-*/}
 
       {this.state.activeProjects && this.state.show==="highlight" &&
         <div className="container-fluid mt-5">
@@ -223,7 +203,6 @@ class App extends Component {
         account = {this.state.account}
         handleToggleView = {this.handleToggleView}
         connected = {this.state.connected}
-        handleToggleTheaterView = {this.handleToggleTheaterView}
         web3 = {this.state.web3}
         artBlocks = {this.state.artBlocks}
         network = {this.state.network}
@@ -231,10 +210,43 @@ class App extends Component {
         />
         </div>
       }
+
+      {this.state.activeProjects && this.state.show==="usergallery" &&
+      <div >
+        <UserGallery
+        project ={this.state.currentProject}
+        account = {this.state.account}
+        handleToggleView = {this.handleToggleView}
+        connected = {this.state.connected}
+        web3 = {this.state.web3}
+        artBlocks = {this.state.artBlocks}
+        network = {this.state.network}
+        baseURL ={baseURL}
+        tokensOfOwner = {this.state.tokensOfOwner}
+        />
+        </div>
+      }
+
+      {this.state.activeProjects && this.state.show==="learn" &&
+      <div >
+        <Learn
+        project ={this.state.currentProject}
+        account = {this.state.account}
+        handleToggleView = {this.handleToggleView}
+        connected = {this.state.connected}
+        web3 = {this.state.web3}
+        artBlocks = {this.state.artBlocks}
+        network = {this.state.network}
+        baseURL ={baseURL}
+        tokensOfOwner = {this.state.tokensOfOwner}
+        />
+        </div>
+      }
+
       </div>
-    }
+
     </div>
-    </div>
+
 
 
 
