@@ -110,7 +110,10 @@ handlePreviousToken(){
     <Col xs={12} md={5}>
     <Container style={{border:"1px solid gray", borderRadius:"2px"}}>
     <div className="mt-2 mb-2">
-    <h5>{this.state.projectDescription && this.state.projectDescription[0]}</h5>
+    <Button variant="link"
+            className="p-0"
+            onClick={() => this.props.handleToggleView("project",this.props.project)}><h5>{this.state.projectDescription && this.state.projectDescription[0]}</h5></Button>
+
     <h6>{this.state.projectDescription && this.state.projectDescription[1]}</h6>
     <br/>
     <p>#{Number(this.state.randomToken)-Number(this.state.project)*1000000} of {this.state.projectTokens && this.state.projectTokens.length} minted ({this.state.projectTokenDetails && this.state.projectTokenDetails[3]} max)<span style={{"float":"right"}}>{this.state.projectTokenDetails && this.state.web3.utils.fromWei(this.state.projectTokenDetails[1],'ether')}Ξ</span></p>

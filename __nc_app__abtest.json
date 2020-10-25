@@ -23,11 +23,11 @@
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site/README.md"
   },
-  "__nc_app__abtest.json": {
-    "mt": "Thu Oct 22 2020 00:02:50 GMT-0500 (Central Daylight Time)",
+  "__nc_app__ab-front-end.json": {
+    "mt": "Mon Oct 19 2020 00:02:49 GMT-0500 (Central Daylight Time)",
     "exists": true,
     "state": 1,
-    "path": "/Users/erick/apps/artblocks-site/__nc_app__abtest.json"
+    "path": "/Users/erick/apps/artblocks-site/__nc_app__ab-front-end.json"
   },
   "build/asset-manifest.json": {
     "mt": "Thu Sep 17 2020 09:20:47 GMT-0500 (Central Daylight Time)",

@@ -2,6 +2,7 @@ import React, { Component} from 'react'
 import { ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS } from './config'
 import Web3 from 'web3'
 import {Card, Button, CardDeck, Row, Col} from 'react-bootstrap';
+import {TwitterShareButton} from 'react-twitter-embed';
 import './ProjectGallery.css';
 
 
@@ -58,6 +59,18 @@ class Project extends Component {
         <p>Total Minted: {this.state.projectTokens && this.state.projectTokens.length} out of a maximum of {this.state.projectTokenDetails && this.state.projectTokenDetails[3]}</p>
 
         <br />
+
+        {this.state.projectDescription &&
+          <TwitterShareButton
+      url={'https://api.artblocks.io/image/'+this.state.token}
+      options={{ text:this.state.projectDescription[0]+" #"+(Number(this.state.token)-Number(this.props.project)*1000000), via: 'artblocks_io' }}
+      tag={'genArt'}
+    />
+
+
+        }
+
+
 
 
 

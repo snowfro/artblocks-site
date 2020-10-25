@@ -41,6 +41,7 @@ class Project extends Component {
 
 
   async purchase() {
+
     this.setState({purchase:true});
     await this.state.artBlocks.methods.purchase(this.props.project).send({
       from:this.props.account,
@@ -53,6 +54,8 @@ class Project extends Component {
       this.props.handleToggleView("theater",mintedToken);
 })
 .catch(err => this.setState({purchase:false}));
+
+//this.props.handleToggleView("theater",2000000);
 }
 
   handleNextImage(){
@@ -142,7 +145,7 @@ class Project extends Component {
         </CardDeck>
         <br/>
         <div className="text-center">
-        <button className='btn-light btn-sm' onClick={() => this.props.handleToggleView("gallery",this.state.project)}>Go Back</button>
+        <button className='btn-light btn-sm' onClick={() => this.props.handleToggleView("gallery",this.state.project)}>Gallery</button>
         </div>
       </Col>
     </Row>
