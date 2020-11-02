@@ -1,0 +1,332 @@
+{
+  ".DS_Store": {
+    "mt": "Sun Nov 01 2020 22:37:22 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/.DS_Store"
+  },
+  ".env": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/.env"
+  },
+  ".gitignore": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/.gitignore"
+  },
+  "README.md": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/README.md"
+  },
+  "__nc_app__ab-front-end.json": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/__nc_app__ab-front-end.json"
+  },
+  "__nc_app__abtest.json": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/__nc_app__abtest.json"
+  },
+  "build/asset-manifest.json": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/asset-manifest.json"
+  },
+  "build/favicon.ico": {
+    "mt": "Sun Nov 01 2020 19:00:02 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/favicon.ico"
+  },
+  "build/index.html": {
+    "mt": "Sun Nov 01 2020 19:38:53 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/index.html"
+  },
+  "build/logo192.png": {
+    "mt": "Sun Nov 01 2020 19:00:02 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/logo192.png"
+  },
+  "build/logo512.png": {
+    "mt": "Sun Nov 01 2020 19:00:02 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/logo512.png"
+  },
+  "build/manifest.json": {
+    "mt": "Sun Nov 01 2020 19:00:02 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/manifest.json"
+  },
+  "build/precache-manifest.ab70facb12fb2d7dfee5c8ff58e1f37b.js": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/precache-manifest.ab70facb12fb2d7dfee5c8ff58e1f37b.js"
+  },
+  "build/robots.txt": {
+    "mt": "Sun Nov 01 2020 19:00:02 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/robots.txt"
+  },
+  "build/service-worker.js": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/service-worker.js"
+  },
+  "build/static/css/2.1bbcb1ae.chunk.css": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/css/2.1bbcb1ae.chunk.css"
+  },
+  "build/static/css/2.1bbcb1ae.chunk.css.map": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/css/2.1bbcb1ae.chunk.css.map"
+  },
+  "build/static/css/main.a3bc67a9.chunk.css": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/css/main.a3bc67a9.chunk.css"
+  },
+  "build/static/css/main.a3bc67a9.chunk.css.map": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/css/main.a3bc67a9.chunk.css.map"
+  },
+  "build/static/js/2.eeab5da4.chunk.js": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/js/2.eeab5da4.chunk.js"
+  },
+  "build/static/js/2.eeab5da4.chunk.js.map": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/js/2.eeab5da4.chunk.js.map"
+  },
+  "build/static/js/main.f4c3bba2.chunk.js": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/js/main.f4c3bba2.chunk.js"
+  },
+  "build/static/js/main.f4c3bba2.chunk.js.map": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/js/main.f4c3bba2.chunk.js.map"
+  },
+  "build/static/js/runtime~main.42ac5946.js": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/js/runtime~main.42ac5946.js"
+  },
+  "build/static/js/runtime~main.42ac5946.js.map": {
+    "mt": "Sun Nov 01 2020 19:00:39 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/build/static/js/runtime~main.42ac5946.js.map"
+  },
+  "package-lock.json": {
+    "mt": "Sun Nov 01 2020 19:51:22 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/package-lock.json"
+  },
+  "package.json": {
+    "mt": "Sun Nov 01 2020 19:51:21 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/package.json"
+  },
+  "public/.DS_Store": {
+    "mt": "Sun Nov 01 2020 22:43:38 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/public/.DS_Store"
+  },
+  "public/favicon.ico": {
+    "mt": "Sun Nov 01 2020 22:43:19 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/public/favicon.ico"
+  },
+  "public/index.html": {
+    "mt": "Sun Nov 01 2020 22:05:20 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/public/index.html"
+  },
+  "public/logo192.png": {
+    "mt": "Sun Nov 01 2020 22:40:01 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/public/logo192.png"
+  },
+  "public/logo512.png": {
+    "mt": "Sun Nov 01 2020 22:35:42 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/public/logo512.png"
+  },
+  "public/manifest.json": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/public/manifest.json"
+  },
+  "public/robots.txt": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/public/robots.txt"
+  },
+  "server.js": {
+    "mt": "Sun Nov 01 2020 22:01:57 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/server.js"
+  },
+  "src/App.css": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/App.css"
+  },
+  "src/App.js": {
+    "mt": "Sun Nov 01 2020 17:31:25 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/App.js"
+  },
+  "src/App.test.js": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/App.test.js"
+  },
+  "src/ControlPanel.js": {
+    "mt": "Sun Nov 01 2020 16:16:57 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/ControlPanel.js"
+  },
+  "src/Highlight.js": {
+    "mt": "Mon Nov 02 2020 10:52:57 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/Highlight.js"
+  },
+  "src/Intro.js": {
+    "mt": "Sun Nov 01 2020 22:46:15 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/Intro.js"
+  },
+  "src/Learn.js": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/Learn.js"
+  },
+  "src/Nav.css": {
+    "mt": "Sun Oct 25 2020 22:58:12 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/Nav.css"
+  },
+  "src/Nav.js": {
+    "mt": "Sun Nov 01 2020 22:47:06 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/Nav.js"
+  },
+  "src/NewToken.js": {
+    "mt": "Sun Nov 01 2020 22:47:20 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/NewToken.js"
+  },
+  "src/Project.js": {
+    "mt": "Sun Nov 01 2020 22:47:52 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/Project.js"
+  },
+  "src/ProjectGallery.css": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/ProjectGallery.css"
+  },
+  "src/ProjectGallery.js": {
+    "mt": "Sun Nov 01 2020 22:46:44 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/ProjectGallery.js"
+  },
+  "src/UserGallery.js": {
+    "mt": "Sun Nov 01 2020 22:48:05 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/UserGallery.js"
+  },
+  "src/ViewToken.js": {
+    "mt": "Sun Nov 01 2020 22:09:03 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/ViewToken.js"
+  },
+  "src/config.js": {
+    "mt": "Thu Oct 29 2020 13:11:01 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/config.js"
+  },
+  "src/index.js": {
+    "mt": "Sun Nov 01 2020 11:41:45 GMT-0600 (Central Standard Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/index.js"
+  },
+  "src/logo.svg": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/logo.svg"
+  },
+  "src/serviceWorker.js": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/serviceWorker.js"
+  },
+  "src/setupTests.js": {
+    "mt": "Sun Oct 25 2020 17:45:36 GMT-0500 (Central Daylight Time)",
+    "exists": true,
+    "state": 1,
+    "path": "/Users/erick/apps/artblocks-site-migrate/src/setupTests.js"
+  }
+}

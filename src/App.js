@@ -9,98 +9,181 @@ import NewToken from './NewToken';
 import Navigation from './Nav';
 import Intro from './Intro';
 import ProjectGallery from './ProjectGallery';
-import UserGallery from './UserGallery';
+//import YourTokens from './YourTokens';
 import Learn from './Learn';
+import ControlPanel from './ControlPanel';
+import UserGallery from './UserGallery';
+import ViewToken from './ViewToken';
 import {Col,Row} from 'react-bootstrap';
+import {Switch, Route, useParams} from 'react-router-dom';
+
+
+
 import './App.css'
+
+function UserGal(props){
+  let {address}=useParams();
+  return(
+  <UserGallery
+  handleToggleView = {props.handleToggleView}
+  web3 = {props.web3}
+  artBlocks = {props.artBlocks}
+  network = {props.network}
+  baseURL ={props.baseURL}
+  lookupAcct={address}
+  />
+)
+}
+
+function Proj(props){
+  let {project}=useParams();
+  return(
+  <Project
+  project ={project}
+  account = {props.account}
+  handleToggleView = {props.handleToggleView}
+  connected = {props.connected}
+  web3 = {props.web3}
+  artBlocks = {props.artBlocks}
+  network = {props.network}
+  baseURL ={props.baseURL}
+  isWhitelisted={props.isWhitelisted}
+  />
+)
+
+}
+
+function ViewTok(props){
+  let {tokenId}=useParams();
+  return(
+    <ViewToken
+    token={tokenId}
+    artBlocks={props.artBlocks}
+    handleToggleView = {props.handleToggleView}
+    baseURL ={props.baseURL}
+    />
+  )
+}
 
 
 
 const API_KEY = process.env.REACT_APP_INFURA_KEY;
 
 class App extends Component {
-  async componentDidMount() {
-    if (typeof web3 !== "undefined"){
-      const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
-      const network = await web3.eth.net.getNetworkType()
-      console.log(network);
-      const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
-      if (network !== "rinkeby"){
-        alert("please change network to Rinkeby and press OK");
-        window.location.reload(false);
-      } else {
-      const activeProjects = await artBlocks.methods.platform_ShowAllProjectIds().call();
-      const totalInvocations = await artBlocks.methods.totalSupply().call();
-      this.setState({artBlocks, web3, activeProjects, totalInvocations, network, currentProject:Math.floor(Math.random()*activeProjects.length)});
-    }
-    } else {
-      const web3 = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${API_KEY}`));
-      const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
-      const activeProjects = await artBlocks.methods.platform_ShowAllProjectIds().call();
-      const totalInvocations = await artBlocks.methods.totalSupply().call();
-      this.setState({artBlocks, web3, activeProjects, totalInvocations, network:"none", currentProject:Math.floor(Math.random()*activeProjects.length)});
-    }
-  }
-
-  async loadAccountData() {
-    const accounts = await this.state.web3.eth.getAccounts();
-    const tokensOfOwner = await this.state.artBlocks.methods.tokensOfOwner(accounts[0]).call();
-    this.setState({ account: accounts[0], tokensOfOwner });
-  }
-
-  handleConnectToMetamask(){
-    if (this.state.network==="rinkeby"){
-    window.ethereum.request({method:'eth_requestAccounts'}).then(result=>{
-      console.log(result);
-      this.setState({connected:true});
-      this.loadAccountData();
-    });
-  } else {
-    alert("please switch to rinkeby network then press OK");
-    window.location.reload(false);
-  }
-      //this.loadBlockchainData();
-  }
-
-  handleNextProject(){
-    //let currentProject = this.state.currentProject;
-    let newProject = Math.floor(Math.random()*this.state.activeProjects.length);
-    this.setState({currentProject:newProject});
-  }
-
-  handleToggleView(view,input){
-    console.log(view,input);
-    if (view==="highlight"){
-      this.setState({show:"highlight"})
-    } else if (view==="gallery"){
-      this.setState({show:"gallery", currentProject:input})
-      console.log("newproject"+input);
-    } else if (view==="project"){
-      this.setState({show:"project", currentProject:input})
-      console.log("newproject"+input);
-    } else if (view==="theater"){
-      this.setState({show:"theater", currentToken:input})
-    } else if (view==="usergallery"){
-      this.setState({show:"usergallery", currentToken:input})
-    } else if (view==="learn"){
-      this.setState({show:"learn", currentToken:input})
-    }
-  }
-
-
 
   constructor(props) {
     super(props)
-    this.state = { account: '', connected:false, show:"highlight", currentProject:0, currenttoken:0}
+    this.state = { account: '', connected:false, show:"highlight", currentProject:'', currenttoken:0, lookupAcct:'0x8De4e517A6F0B84654625228D8293b70AB49cF6C', network:'', isWhitelisted:false, overlay:false}
     this.handleConnectToMetamask = this.handleConnectToMetamask.bind(this);
     this.handleToggleView = this.handleToggleView.bind(this);
     this.handleNextProject = this.handleNextProject.bind(this);
 
   }
 
+  async componentDidMount() {
+
+      const web3 = new Web3(new Web3.providers.HttpProvider(`https://rinkeby.infura.io/v3/${API_KEY}`));
+      const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+      const allProjects = await artBlocks.methods.showAllProjectIds().call();
+      let activeProjects=[];
+      await Promise.all(allProjects.map(async (project)=>{
+        let details = await artBlocks.methods.projectTokenInfo(project).call();
+        if (details[4]===true){
+        activeProjects.push(project);
+      }
+        return null;
+      }));
+      let artistAddresses = await Promise.all(allProjects.map(async (project)=>{
+        let details = await artBlocks.methods.projectTokenInfo(project).call();
+        return details[0];
+      }));
+      const totalInvocations = await artBlocks.methods.totalSupply().call();
+      if (this.props.project){
+        this.setState({currentProject:this.props.project});
+      } else {
+        this.setState({currentProject:Math.floor(Math.random()*activeProjects.length)});
+      }
+      this.setState({artBlocks, web3, allProjects, totalInvocations, artistAddresses, activeProjects});
+    //}
+  }
+
+async componentDidUpdate(oldProps){
+    if (oldProps.show !== this.props.show || oldProps.project !==this.props.project){
+      if (this.props.project){
+        this.setState({currentProject:this.props.project});
+      } else {
+        this.setState({currentProject:Math.floor(Math.random()*this.state.activeProjects.length)});
+      }
+      this.setState({show:this.props.show});
+    }
+}
+
+  async loadAccountData() {
+    const accounts = await this.state.web3.eth.getAccounts();
+    const tokensOfOwner = await this.state.artBlocks.methods.tokensOfOwner(accounts[0]).call();
+    const isWhitelisted = await this.state.artBlocks.methods.isWhitelisted(accounts[0]).call();
+    let projectsOfArtist=[];
+    this.state.artistAddresses.map((projectArtistAddress, index)=>{
+      if (projectArtistAddress === accounts[0] || isWhitelisted){
+        projectsOfArtist.push(index);
+      }
+      return null;
+    });
+    this.setState({ account: accounts[0], tokensOfOwner, isWhitelisted, projectsOfArtist });
+  }
+
+  async handleConnectToMetamask(){
+    if (typeof web3 !== "undefined"){
+      const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+      const network = await web3.eth.net.getNetworkType();
+      const artBlocks = new web3.eth.Contract(ARTBLOCKS_CONTRACT_ABI, ARTBLOCKS_CONTRACT_ADDRESS);
+      if (network === "rinkeby"){
+        window.ethereum.request({method:'eth_requestAccounts'}).then(result=>{
+          console.log(result);
+          this.setState({connected:true, web3, network, artBlocks});
+          this.loadAccountData();
+        });
+      }  else {
+        alert("please switch to Rinkeby and try to connect again");
+      }
+    } else {
+      alert("MetaMask not detected. Please install extension and try again.");
+    }
+
+
+  }
+
+  handleNextProject(){
+
+    let newProject = Math.floor(Math.random()*this.state.activeProjects.length);
+    let oldProject = this.state.currentProject;
+    if (newProject!==oldProject){
+    this.setState({currentProject:newProject});
+  } else {
+    this.handleNextProject();
+  }
+  }
+
+  handleToggleView(view,input){
+
+    if (view==="newToken"){
+      this.setState({show:"newToken", currentToken:input, overlay:true});
+    } else if (view==="controlPanel"){
+      this.setState({show:"controlPanel", overlay:true});
+    } else if (view==="off"){
+      this.setState({overlay:false});
+    }
+    if (this.state.connected){
+      this.loadAccountData();
+    }
+
+  }
+
   render() {
 
-    let baseURL = "https://api.artblocks.io";
+    let baseURL = "https://stagingapi.artblocks.io";
+    console.log(this.props)
+
 
     //let baseURL = "http://localhost:8080"
 
@@ -110,12 +193,14 @@ class App extends Component {
 
       <div className="container-fluid">
 
+
       <div>
-      {this.state.activeProjects &&
+      {this.state.allProjects &&
       <Navigation
       web3 = {this.state.web3}
       artBlocks = {this.state.artBlocks}
       handleToggleView = {this.handleToggleView}
+      allProjects = {this.state.allProjects}
       activeProjects = {this.state.activeProjects}
       handleConnectToMetamask = {this.handleConnectToMetamask}
       connected = {this.state.connected}
@@ -123,6 +208,8 @@ class App extends Component {
       account = {this.state.account}
       tokensOfOwner={this.state.tokensOfOwner}
       baseURL ={baseURL}
+      isWhitelisted={this.state.isWhitelisted}
+      projectsOfArtist={this.state.projectsOfArtist}
       />
       }
       </div>
@@ -130,29 +217,98 @@ class App extends Component {
 
 
 
-      <div className="container-fluid">
-      {this.state.show==="theater" &&
+      {this.state.overlay &&
+
+
         <div>
-        <NewToken
-        project={this.state.currentProject}
-        token ={this.state.currentToken}
-        account = {this.state.account}
-        tokensOfOwner = {this.state.tokensOfOwner}
-        handleToggleView = {this.handleToggleView}
-        baseURL ={baseURL}
-        />
-        </div>
+        {this.state.show==="newToken" &&
+          <div>
+          <NewToken
+          artBlocks={this.state.artBlocks}
+          token ={this.state.currentToken}
+          handleToggleView = {this.handleToggleView}
+          baseURL ={baseURL}
+          />
+          </div>
+        }
+
+
+        {this.state.allProjects && this.state.show==="controlPanel" &&
+        <div >
+          <ControlPanel
+          account = {this.state.account}
+          handleToggleView = {this.handleToggleView}
+          connected = {this.state.connected}
+          web3 = {this.state.web3}
+          artBlocks = {this.state.artBlocks}
+          network = {this.state.network}
+          baseURL ={baseURL}
+          isWhitelisted={this.state.isWhitelisted}
+          />
+          </div>
+        }
+      </div>
       }
 
 
+      {!this.state.overlay &&
+      <Switch>
+      <Route path="/gallery">
+      {this.state.activeProjects &&
+        this.state.activeProjects.sort(function(a, b){return a - b}).map((project,index)=>{
+        return(
+          <div key={index}>
+        <ProjectGallery
+        key={index}
+        project ={project}
+        account = {this.state.account}
+        tokensOfOwner = {this.state.tokensOfOwner}
+        handleToggleView = {this.handleToggleView}
+        web3 = {this.state.web3}
+        artBlocks = {this.state.artBlocks}
+        network = {this.state.network}
+        baseURL ={baseURL}
+        />
+        </div>
+      )
+      })
+    }
 
+    </Route>
 
+      <Route path="/token/:tokenId">
+      {this.state.allProjects &&
+      <ViewTok
+      artBlocks={this.state.artBlocks}
+      handleToggleView = {this.handleToggleView}
+      baseURL ={baseURL}
+      />
+    }
+      </Route>
 
+      <Route path="/project/:project">
+      {this.state.allProjects &&
 
-      {this.state.activeProjects && this.state.show==="highlight" &&
+        <Proj
+
+        account = {this.state.account}
+        handleToggleView = {this.handleToggleView}
+        connected = {this.state.connected}
+        web3 = {this.state.web3}
+        artBlocks = {this.state.artBlocks}
+        network = {this.state.network}
+        baseURL ={baseURL}
+        isWhitelisted={this.state.isWhitelisted}
+        />
+      }
+      </Route>
+
+      <Route exact path="/">
+      {this.state.allProjects &&
         <div className="container-fluid mt-5">
           <Intro
-            activeProjects={this.state.activeProjects}
+            allProjects={this.state.allProjects}
+            activeProjects = {this.state.activeProjects}
             totalInvocations={this.state.totalInvocations}
           />
         <div className="container mt-5">
@@ -160,10 +316,10 @@ class App extends Component {
           <Col>
             <Highlight
               project ={this.state.currentProject}
+              web3 = {this.state.web3}
               account = {this.state.account}
               tokensOfOwner = {this.state.tokensOfOwner}
               handleToggleView = {this.handleToggleView}
-              web3 = {this.state.web3}
               artBlocks = {this.state.artBlocks}
               network = {this.state.network}
               handleNextProject = {this.handleNextProject}
@@ -175,77 +331,29 @@ class App extends Component {
         </div>
       }
 
-        {this.state.activeProjects && this.state.show==="gallery" &&
-          this.state.activeProjects.map((project,index)=>{
-          return(
-            <div key={index}>
-          <ProjectGallery
-          background={index%2===1?0:1}
-          key={index}
-          project ={project}
-          account = {this.state.account}
-          tokensOfOwner = {this.state.tokensOfOwner}
-          handleToggleView = {this.handleToggleView}
-          web3 = {this.state.web3}
-          artBlocks = {this.state.artBlocks}
-          network = {this.state.network}
-          baseURL ={baseURL}
-          />
-          </div>
-        )
-        })
-      }
-
-      {this.state.activeProjects && this.state.show==="project" &&
-      <div >
-        <Project
-        project ={this.state.currentProject}
-        account = {this.state.account}
+      </Route>
+      <Route path="/user/:address">
+      {this.state.allProjects &&
+        <UserGal
         handleToggleView = {this.handleToggleView}
-        connected = {this.state.connected}
         web3 = {this.state.web3}
         artBlocks = {this.state.artBlocks}
         network = {this.state.network}
         baseURL ={baseURL}
         />
-        </div>
       }
+        </Route>
 
-      {this.state.activeProjects && this.state.show==="usergallery" &&
-      <div >
-        <UserGallery
-        project ={this.state.currentProject}
-        account = {this.state.account}
-        handleToggleView = {this.handleToggleView}
-        connected = {this.state.connected}
-        web3 = {this.state.web3}
-        artBlocks = {this.state.artBlocks}
-        network = {this.state.network}
-        baseURL ={baseURL}
-        tokensOfOwner = {this.state.tokensOfOwner}
-        />
-        </div>
-      }
 
-      {this.state.activeProjects && this.state.show==="learn" &&
-      <div >
-        <Learn
-        project ={this.state.currentProject}
-        account = {this.state.account}
-        handleToggleView = {this.handleToggleView}
-        connected = {this.state.connected}
-        web3 = {this.state.web3}
-        artBlocks = {this.state.artBlocks}
-        network = {this.state.network}
-        baseURL ={baseURL}
-        tokensOfOwner = {this.state.tokensOfOwner}
-        />
-        </div>
-      }
+
+      <Route exact path="/learn">
+        <Learn/>
+        </Route>
+        </Switch>
+        }
 
       </div>
 
-    </div>
 
 
 

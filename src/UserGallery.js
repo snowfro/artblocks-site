@@ -1,46 +1,59 @@
 import React, { Component} from 'react'
-import {Card, Button, CardDeck, Col, Row} from 'react-bootstrap';
+import {Card, Button, CardDeck, Col, Row, ButtonGroup} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
 
 class UserGallery extends Component {
   constructor(props) {
     super(props)
-    this.state = {loadQueue:this.props.project*1000000, account:'', tokenURIInfo:'', purchase:false};
-    //this.handleToggleTheaterView = handleToggleTheaterView.bind(this);
+    this.state = {};
+
   }
 
   async componentDidMount() {
-
-    const web3 = this.props.web3;
     const artBlocks = this.props.artBlocks;
     const network = this.props.network;
-    const tokenData = await Promise.all(this.props.tokensOfOwner.map(async (token)=>{
+    console.log("lua"+this.props.lookupAcct);
+    const tokensOfAccount = await artBlocks.methods.tokensOfOwner(this.props.lookupAcct).call();
+    const tokenData = await Promise.all(tokensOfAccount.map(async (token)=>{
       const projectId = await artBlocks.methods.tokenIdToProjectId(token).call();
-      /*
-      const projectDescription = await artBlocks.methods.details_ProjectDescription(projectId).call();
-      const projectTokenDetails = await artBlocks.methods.details_ProjectTokenInfo(projectId).call();
-      const projectScriptDetails = await artBlocks.methods.details_ProjectScriptInfo(projectId).call();
-      const projectURIInfo = await artBlocks.methods.details_ProjectURIInfo(projectId).call();
-      */
       return [token, projectId];
     }));
-    let projectsOfOwner = new Set(await Promise.all(this.props.tokensOfOwner.map(async (token)=>{
+    let projectsOfAccount = new Set(await Promise.all(tokensOfAccount.map(async (token)=>{
       let projectId = await artBlocks.methods.tokenIdToProjectId(token).call();
       return projectId;
     })));
-    this.setState({web3, artBlocks, tokenData, projectsOfOwner, network});
+    this.setState({artBlocks, tokenData, projectsOfAccount, network, tokensOfAccount});
     this.buildUserTokenArray();
+  }
+
+  async componentDidUpdate(oldProps){
+    if (oldProps.lookupAcct !== this.props.lookupAcct){
+      console.log('acctchange');
+    const artBlocks = this.props.artBlocks;
+    const network = this.props.network;
+    const tokensOfAccount = await artBlocks.methods.tokensOfOwner(this.props.lookupAcct).call();
+    const tokenData = await Promise.all(tokensOfAccount.map(async (token)=>{
+      const projectId = await artBlocks.methods.tokenIdToProjectId(token).call();
+      return [token, projectId];
+    }));
+    let projectsOfAccount = new Set(await Promise.all(tokensOfAccount.map(async (token)=>{
+      let projectId = await artBlocks.methods.tokenIdToProjectId(token).call();
+      return projectId;
+    })));
+    this.setState({artBlocks, tokenData, projectsOfAccount, network, tokensOfAccount});
+    this.buildUserTokenArray();
+    }
   }
 
   async buildUserTokenArray() {
     let projects ={};
-    //const sortedProjects = new Set(this.state.projectsOfOwner);
-    //console.log(this.state.tokenData);
-    for (let project of this.state.projectsOfOwner) {
-      const projectDescription = await this.state.artBlocks.methods.details_ProjectDescription(project).call();
-      const projectTokenDetails = await this.state.artBlocks.methods.details_ProjectTokenInfo(project).call();
-      const projectScriptDetails = await this.state.artBlocks.methods.details_ProjectScriptInfo(project).call();
-      const projectURIInfo = await this.state.artBlocks.methods.details_ProjectURIInfo(project).call();
+
+    for (let project of this.state.projectsOfAccount) {
+      const projectDescription = await this.state.artBlocks.methods.projectDetails(project).call();
+      const projectTokenDetails = await this.state.artBlocks.methods.projectTokenInfo(project).call();
+      const projectScriptDetails = await this.state.artBlocks.methods.projectScriptInfo(project).call();
+      const projectURIInfo = await this.state.artBlocks.methods.projectURIInfo(project).call();
 
       let tokens = [];
       for (let i=0;i<this.state.tokenData.length;i++){
@@ -56,6 +69,7 @@ class UserGallery extends Component {
   render() {
 
 
+    console.log(this.props);
     let baseURL = this.props.baseURL;
 
     function tokenImage(token){
@@ -66,13 +80,11 @@ class UserGallery extends Component {
       return baseURL+'/generator/'+token;
     }
 
-
-
-
-    console.log(this.state.projects);
     return (
-  <div>
-
+      <div className="mt-4">
+      <h5>User <a href={"https://rinkeby.etherscan.io/address/"+this.props.lookupAcct} target="_blank" rel="noopener noreferrer">{this.props.lookupAcct.slice(0,10)}'s</a> Collection</h5>
+      <p>Total works purchased or minted: {this.state.tokensOfAccount && this.state.tokensOfAccount.length}</p>
+      <br/>
       {this.state.projects &&
 
             Object.keys(this.state.projects).map((project,index) => {
@@ -88,12 +100,14 @@ class UserGallery extends Component {
 
                   <h1>{this.state.projects[project].projectDescription[0]}</h1>
                   <h3>by {this.state.projects[project].projectDescription[1]}</h3>
-                  <a href={this.state.projects[project].projectDescription[2]} target="_blank" rel="noopener noreferrer">{this.state.projects[project].projectDescription[2]}</a>
+                  <a href={this.state.projects[project].projectDescription[3]} target="_blank" rel="noopener noreferrer">{this.state.projects[project].projectDescription[3]}</a>
                   <p>Total Minted: {this.state.projects[project].projectTokenDetails[2]} / {this.state.projects[project].projectTokenDetails[3]} max</p>
                   <br />
-                  <p>Price per token: {this.state.web3.utils.fromWei(this.state.projects[project].projectTokenDetails[1] ,'ether')}Ξ</p>
+                  <p>{this.state.projects[project].projectDescription[2]}</p>
+                  <br/>
+                  <p>Price per token: {this.props.web3.utils.fromWei(this.state.projects[project].projectTokenDetails[1] ,'ether')}Ξ</p>
                   <br />
-                  <Button variant="dark" onClick={()=>this.props.handleToggleView("project",project)}>Visit Project</Button>
+                  <Button variant="dark btn-sm" as={Link} to={'/project/'+project} >Visit Project</Button>
                   </div>
                   </div>
                 </Col>
@@ -104,11 +118,16 @@ class UserGallery extends Component {
                       return (
                         <div key={index}>
                         <Col>
-                          <Card border="light" className='mx-auto' style={{ width: '14rem' }} >
+                          <Card border="light" className='mx-auto' style={{ width: '16rem' }} >
                           <Card.Body>
                             <Card.Img src={tokenImage(token)} />
                             <div className="text-center">
-                            <Button variant="light btn-block mt-1" onClick={()=> window.open(tokenGenerator(token), "_blank")}>#{Number(token)-Number(project)*1000000}</Button>
+                            <ButtonGroup size="sm">
+                              <Button variant="light" disabled>#{Number(token)-Number(project)*1000000}</Button>
+                              <Button as={Link} to={"/token/"+token} variant="light" onClick={() => this.props.handleToggleView("viewToken",token)}>Details</Button>
+                              <Button variant="light" onClick={()=> window.open(tokenImage(token), "_blank")}>Image</Button>
+                              <Button variant="light" onClick={()=> window.open(tokenGenerator(token), "_blank")}>Script</Button>
+                            </ButtonGroup>
                             </div>
                           </Card.Body>
                           </Card>

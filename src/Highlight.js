@@ -1,79 +1,45 @@
 import React, { Component} from 'react'
 import {Container, Row, Col, Image, Button} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 import './ProjectGallery.css';
 
 class Highlight extends Component {
   constructor(props) {
     super(props)
     this.state = {tokenURIInfo:''};
-    this.handleNextToken = this.handleNextToken.bind(this);
-    this.handlePreviousToken = this.handlePreviousToken.bind(this);
   }
 
   async componentDidMount() {
-    const web3 = this.props.web3;
+    //const web3 = this.props.web3;
     const artBlocks = this.props.artBlocks;
-    const projectTokens = await artBlocks.methods.project_ShowAllTokens(this.props.project).call();
-    const projectDescription = await artBlocks.methods.details_ProjectDescription(this.props.project).call();
-    const projectTokenDetails = await artBlocks.methods.details_ProjectTokenInfo(this.props.project).call();
-    const projectScriptDetails = await artBlocks.methods.details_ProjectScriptInfo(this.props.project).call();
-    const projectURIInfo = await artBlocks.methods.details_ProjectURIInfo(this.props.project).call();
+    const projectTokens = await artBlocks.methods.projectShowAllTokens(this.props.project).call();
+    const projectDescription = await artBlocks.methods.projectDetails(this.props.project).call();
+    const projectTokenDetails = await artBlocks.methods.projectTokenInfo(this.props.project).call();
+    const projectScriptDetails = await artBlocks.methods.projectScriptInfo(this.props.project).call();
+    const projectURIInfo = await artBlocks.methods.projectURIInfo(this.props.project).call();
     const randomToken = projectTokens[Math.floor(Math.random()*projectTokens.length)];
-    this.setState({web3,artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, randomToken, project:this.props.project});
+    this.setState({artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, randomToken, project:this.props.project});
   }
 
   async componentDidUpdate(oldProps){
     if (oldProps.project !== this.props.project){
       console.log('change');
     let artBlocks = this.state.artBlocks;
-    const projectTokens = await artBlocks.methods.project_ShowAllTokens(this.props.project).call();
-    const projectDescription = await artBlocks.methods.details_ProjectDescription(this.props.project).call();
-    const projectTokenDetails = await artBlocks.methods.details_ProjectTokenInfo(this.props.project).call();
-    const projectScriptDetails = await artBlocks.methods.details_ProjectScriptInfo(this.props.project).call();
-    const projectURIInfo = await artBlocks.methods.details_ProjectURIInfo(this.props.project).call();
+    const projectTokens = await artBlocks.methods.projectShowAllTokens(this.props.project).call();
+    const projectDescription = await artBlocks.methods.projectDetails(this.props.project).call();
+    const projectTokenDetails = await artBlocks.methods.projectTokenInfo(this.props.project).call();
+    const projectScriptDetails = await artBlocks.methods.projectScriptInfo(this.props.project).call();
+    const projectURIInfo = await artBlocks.methods.projectURIInfo(this.props.project).call();
     const randomToken = projectTokens[Math.floor(Math.random()*projectTokens.length)];
     this.setState({projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, randomToken, project:this.props.project});
   }
   }
 
 
-handleNextToken(){
-  const currentToken = Number(this.state.randomToken);
-  const maxToken = this.props.project*1000000+this.state.projectTokens.length;
-  console.log('current '+currentToken);
-  console.log('maxTokens '+maxToken);
-  if (currentToken<maxToken-1){
-    const nextToken = currentToken+1;
-    this.setState({randomToken:nextToken});
-  } else {
-    const nextToken = this.props.project*1000000;
-    console.log(nextToken);
-    this.setState({randomToken:nextToken.toString()});
-  }
-
-}
-
-handlePreviousToken(){
-  const currentToken = Number(this.state.randomToken);
-  const maxToken = this.state.projectTokens.length;
-  console.log('current '+currentToken);
-  console.log('maxTokens '+maxToken);
-  if (currentToken>this.props.project*1000000){
-    const nextToken = (currentToken-1).toString();
-    this.setState({randomToken:nextToken});
-  } else {
-    const nextToken = (this.props.project*1000000)+maxToken-1;
-    console.log(nextToken);
-    this.setState({randomToken:nextToken.toString()});
-  }
-
-}
-
-
 
 
   render() {
-
+    console.log(this.props.web3);
 
 
 
@@ -84,10 +50,11 @@ handlePreviousToken(){
     function tokenImage(token){
       return baseURL+'/image/'+token;
     }
-
+/*
     function tokenGenerator(token){
       return baseURL+'/generator/'+token;
     }
+    */
 
 /*
     if (this.state.projectURIInfo){
@@ -101,22 +68,23 @@ handlePreviousToken(){
   <Row className="align-items-center">
 
     <Col xs={12} md={6}>
-    <a href={tokenGenerator(this.state.randomToken)} target="_blank" rel="noopener noreferrer">
+
       {this.state.randomToken &&
+        <Link to={"/token/"+this.state.randomToken}>
         <Image style={{width:"100%"}} src={tokenImage(this.state.randomToken)} rounded />
+        </Link>
       }
-      </a>
+
     </Col>
     <Col xs={12} md={5}>
     <Container style={{border:"1px solid gray", borderRadius:"2px"}}>
     <div className="mt-2 mb-2">
-    <Button variant="link"
-            className="p-0"
-            onClick={() => this.props.handleToggleView("project",this.props.project)}><h5>{this.state.projectDescription && this.state.projectDescription[0]}</h5></Button>
+
+    <Link to={"/project/"+this.props.project}><h5>{this.state.projectDescription && this.state.projectDescription[0]}</h5></Link>
 
     <h6>{this.state.projectDescription && this.state.projectDescription[1]}</h6>
     <br/>
-    <p>#{Number(this.state.randomToken)-Number(this.state.project)*1000000} of {this.state.projectTokens && this.state.projectTokens.length} minted ({this.state.projectTokenDetails && this.state.projectTokenDetails[3]} max)<span style={{"float":"right"}}>{this.state.projectTokenDetails && this.state.web3.utils.fromWei(this.state.projectTokenDetails[1],'ether')}Ξ</span></p>
+    <p>#{Number(this.state.randomToken)-Number(this.state.project)*1000000} of {this.state.projectTokens && this.state.projectTokens.length} minted ({this.state.projectTokenDetails && this.state.projectTokenDetails[3]} max)<span style={{"float":"right"}}>{this.state.projectTokenDetails && this.props.web3.utils.fromWei(this.state.projectTokenDetails[1],'ether')}Ξ</span></p>
 
     </div>
     </Container>
@@ -131,8 +99,7 @@ handlePreviousToken(){
   </Row>
   }
   <hr/>
-  <p className="text-center">The above image is static but projects can be dynamic or even interactive! Click the image to visit the live project.</p>
-  </div>
+    </div>
     );
   }
 }
