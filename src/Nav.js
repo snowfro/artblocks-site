@@ -69,34 +69,34 @@ class Navigation extends Component {
 
       <Navbar className="navBar" fixed="top" bg="light" expand="lg">
 
-      <Navbar.Brand as={Link} to="/">Art Blocks [Rinkeby]</Navbar.Brand>
+      <Navbar.Brand as={Link} onClick={()=>{this.props.handleToggleView("off")}} to="/">Art Blocks [Rinkeby]</Navbar.Brand>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
 
-          <Nav.Link as={Link} to="/gallery">Gallery</Nav.Link>
+          <Nav.Link as={Link} onClick={()=>{this.props.handleToggleView("off")}} to="/gallery">Gallery</Nav.Link>
 
             <NavDropdown title="Projects" id="basic-nav-dropdown">
               {this.state.activeProjectsDetails &&
                 this.state.activeProjectsDetails.map((projectInfo,index)=>{
                   return(
 
-                    <NavDropdown.Item key={index} as={Link} to={"/project/"+index}>{projectInfo[1]} by {projectInfo[2]}</NavDropdown.Item>
+                    <NavDropdown.Item key={index} as={Link} onClick={()=>{this.props.handleToggleView("off")}} to={"/project/"+index}>{projectInfo[1]} by {projectInfo[2]}</NavDropdown.Item>
 
                   )
                 })
               }
       </NavDropdown>
 
-      {<Nav.Link as={Link} to={'/learn'}>Learn</Nav.Link>}
+      {<Nav.Link as={Link} onClick={()=>{this.props.handleToggleView("off")}} to={'/learn'}>Learn</Nav.Link>}
 
       </Nav>
       <Nav className="ml-auto">
       {this.props.isWhitelisted && <Nav.Link  href="#" onClick={()=>{this.props.handleToggleView("controlPanel",0)}}>Control Panel</Nav.Link>}
       {this.props.tokensOfOwner &&
 
-              <Nav.Link  as={Link} to={"/user/"+this.props.account}>Your Items</Nav.Link>
+              <Nav.Link  as={Link} onClick={()=>{this.props.handleToggleView("off")}} to={"/user/"+this.props.account}>Your Items</Nav.Link>
 
         }
       </Nav>
@@ -107,7 +107,7 @@ class Navigation extends Component {
         <NavDropdown title="Your Projects" id="basic-nav-dropdown" >
               {this.props.projectsOfArtist.map((project, index)=>{
                 return(
-                      <NavDropdown.Item   as={Link} to={"/project/"+project} className="text-center" key={index}>
+                      <NavDropdown.Item   as={Link} onClick={()=>{this.props.handleToggleView("off")}} to={"/project/"+project} className="text-center" key={index}>
                         {this.state.allProjectsDetails[project][1]}
 
                         </NavDropdown.Item>
@@ -130,7 +130,7 @@ class Navigation extends Component {
 
               this.props.tokensOfOwner.map((token, index)=>{
                 return(
-                      <NavDropdown.Item   as={Link} to={"/token/"+token} className="text-center" key={index}>
+                      <NavDropdown.Item   onClick={()=>{this.props.handleToggleView("off")}} as={Link} to={"/token/"+token} className="text-center" key={index}>
                         <Image  className="d-block mx-auto img-fluid" alt="token" src={tokenImage(token)} fluid/>
                         </NavDropdown.Item>
                 )

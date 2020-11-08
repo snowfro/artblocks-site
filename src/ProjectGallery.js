@@ -93,7 +93,7 @@ handlePreviousToken(){
 
     return (
 
-      <div className="container">
+      <div className="container mt-5">
       {this.state.randomToken &&
       <div>
       <Row>
@@ -129,7 +129,7 @@ handlePreviousToken(){
         <Col>
         <CardDeck className="col d-flex justify-content-center">
 
-          <Card className='mt-4' style={{ width: '20rem' }} >
+          <Card className='mt-4' style={{ width: '18rem' }} >
             <Card.Header as="h5">{this.state.projectDescription && this.state.projectDescription[0]} #{Number(this.state.randomToken)-Number(this.props.project)*1000000} {owned?"(yours)":""}</Card.Header>
             <Card.Body>
             {this.state.randomToken &&
@@ -139,7 +139,7 @@ handlePreviousToken(){
             <div className="text-center">
             <div className="btn-group special">
             <Button variant="dark" onClick={this.handlePreviousToken}>Previous</Button>
-            <Button as={Link} to={'/token/'+this.state.randomToken} variant="dark">Open</Button>
+            <Button as={Link} to={'/token/'+this.state.randomToken} variant="dark">Details</Button>
             <Button variant="dark" onClick={this.handleNextToken}>Next</Button>
             </div>
             </div>

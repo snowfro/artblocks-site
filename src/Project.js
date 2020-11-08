@@ -1,5 +1,5 @@
 import React, { Component} from 'react'
-import {Card, Button, CardDeck, Spinner,Col, Row, Form, Tabs, Tab, ButtonGroup} from 'react-bootstrap';
+import {Card, Button, CardDeck, Spinner,Col, Row, Form, Tabs, Tab, ButtonGroup, Pagination} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 //import {TwitterShareButton} from 'react-twitter-embed';
 
@@ -7,13 +7,14 @@ import {Link} from 'react-router-dom';
 class Project extends Component {
   constructor(props) {
     super(props)
-    this.state = {loadQueue:this.props.project*1000000, account:'', tokenURIInfo:'', purchase:false, ineraction:false, project:this.props.project, artistInterface:false, formValue:'', idValue:''};
+    this.state = {loadQueue:this.props.project*1000000, account:'',tokenURIInfo:'', purchase:false, ineraction:false, project:this.props.project, artistInterface:false, formValue:'', idValue:'', page:1};
     this.handleNextImage = this.handleNextImage.bind(this);
     this.handleToggleArtistInterface = this.handleToggleArtistInterface.bind(this);
     this.purchase = this.purchase.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
     this.handleIdChange = this.handleIdChange.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
 
   }
 
@@ -41,7 +42,7 @@ class Project extends Component {
       const projectScriptDetails = await artBlocks.methods.projectScriptInfo(this.props.project).call();
       const projectURIInfo = await artBlocks.methods.projectURIInfo(this.props.project).call();
       const projectRoyaltyInfo = await artBlocks.methods.getRoyaltyData(this.props.project).call();
-      this.setState({loadQueue:this.props.project*1000000,projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, projectRoyaltyInfo, project:this.props.project});
+      this.setState({page:1,loadQueue:this.props.project*1000000+((this.props.page-1)*20),projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, projectRoyaltyInfo, project:this.props.project});
     } else if (oldProps.artBlocks !== this.props.artBlocks){
       let artBlocks = this.props.artBlocks;
       this.setState({artBlocks});
@@ -453,11 +454,41 @@ class Project extends Component {
     this.setState({loadQueue:nextCard});
   }
 
+  handlePageChange(number){
+    this.setState({page:number, loadQueue:this.props.project*1000000+((number-1)*20)});
+  }
+
   render() {
-    console.log(this.props.project);
+    console.log("page:"+this.state.page);
+    console.log("queue:"+this.state.loadQueue);
+
+
+    let active = this.state.page;
+    let items = [];
+    if (this.state.projectTokens){
+      let projectTokens=this.state.projectTokens;
+      for (let number = 1; number <= Math.ceil(projectTokens.length/20); number++) {
+        items.push(
+          <Pagination.Item key={number} onClick={(number!==active)?()=>{this.handlePageChange(number)}:""} active={number === active}>
+          {number}
+          </Pagination.Item>,
+        );
+      }
+    }
+
+
+const paginationBasic = (
+  <div >
+    <Pagination>{items}</Pagination>
+    <br />
+
+  </div>
+);
+
+    //console.log(this.props.project);
 
     let scriptCount = this.state.projectScriptDetails && this.state.projectScriptDetails[1];
-    console.log("scriptCount"+scriptCount);
+    //console.log("scriptCount"+scriptCount);
     function returnScriptIds(){
       let scripts=[];
       for (let i=0;i<scriptCount;i++){
@@ -469,9 +500,9 @@ class Project extends Component {
 
 
     if (this.state.projectTokenDetails && this.state.projectTokenDetails[0]===this.props.account){
-      console.log("Artist Logged In");
+      //console.log("Artist Logged In");
     }
-    console.log("interface? "+this.state.artistInterface);
+    //console.log("interface? "+this.state.artistInterface);
     let baseURL = this.props.baseURL;
 
     function tokenImage(token){
@@ -482,7 +513,7 @@ class Project extends Component {
       return baseURL+'/generator/'+token;
     }
 
-    console.log(this.state.projectScriptDetails && this.state.projectScriptDetails);
+    //console.log(this.state.projectScriptDetails && this.state.projectScriptDetails);
 
 
 
@@ -493,7 +524,7 @@ class Project extends Component {
 
     <Row className={this.state.projectTokens && this.state.projectTokens.length<10 && !this.state.artistInterface?"align-items-center":""}>
       <Col xs={12} sm={6} md={3}>
-        <div className="sticky-top">
+        <div >
         <div className="text-align-center">
         <br />
         <br />
@@ -524,7 +555,7 @@ class Project extends Component {
         }
 
         {this.props.connected &&
-          <Button className='btn-primary btn-block' onClick={this.purchase}>{this.state.purchase?<div><Spinner
+          <Button className='btn-primary btn-block' disabled={this.state.purchase?true:false} onClick={this.purchase}>{this.state.purchase?<div><Spinner
             as="span"
             animation="border"
             size="sm"
@@ -556,10 +587,13 @@ class Project extends Component {
       </Col>
 
       <Col xs={12} sm={6} md={9}>
+
       {!this.state.artistInterface &&
         <div>
+
         <CardDeck>
           {this.state.projectTokens && this.state.projectTokens.map((token,index)=>{
+            if (this.state.projectTokens.slice((this.state.page-1)*20,this.state.page*20).includes(token)){
             return (
               <div key={index}>
               <Col>
@@ -584,9 +618,14 @@ class Project extends Component {
                 </Card>
               </Col>
               </div>
-            )})
+            )} else {
+              return null;
+            }})
           }
         </CardDeck>
+        <Row className="justify-content-md-center">
+        {paginationBasic}
+        </Row>
         <br/>
         <div className="text-center">
         <Button className='btn-light btn-sm' onClick={() => this.props.handleToggleView("gallery",this.state.project)}>Back To Project List</Button>

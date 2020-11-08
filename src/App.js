@@ -181,8 +181,8 @@ async componentDidUpdate(oldProps){
 
   render() {
 
-    let baseURL = "https://stagingapi.artblocks.io";
-    console.log(this.props)
+    let baseURL = "https://rinkebyapi.artblocks.io";
+
 
 
     //let baseURL = "http://localhost:8080"
@@ -347,7 +347,9 @@ async componentDidUpdate(oldProps){
 
 
       <Route exact path="/learn">
-        <Learn/>
+        <Learn
+        baseURL ={baseURL}
+        />
         </Route>
         </Switch>
         }

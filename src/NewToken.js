@@ -1,5 +1,6 @@
 import React, { Component} from 'react'
-import {Card, Button, CardDeck, Row, Col, ButtonGroup} from 'react-bootstrap';
+import {Card, Button, CardDeck, Row, Col, ButtonGroup, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 import {TwitterShareButton} from 'react-twitter-embed';
 //import {Link} from 'react-router-dom';
 import './ProjectGallery.css';
@@ -25,6 +26,24 @@ class NewToken extends Component {
 
   render() {
 
+    const viewImageToolTip = (props) => (
+      <Tooltip id="button-tooltip" {...props}>
+      View static rendered image fullscreen.
+      </Tooltip>
+    );
+
+    const viewScriptToolTip = (props) => (
+      <Tooltip id="button-tooltip" {...props}>
+      Visit the live script for this project. The script will run in your browser and generate the content in real time. Projects might be interactive! Check description panel for more details.
+      </Tooltip>
+    );
+
+    const viewGalleryToolTip = (props) => (
+      <Tooltip id="button-tooltip" {...props}>
+      {this.state.projectDescription && "View all "+this.state.projectDescription[0]+" tokens."}
+      </Tooltip>
+    );
+
 
 
     let baseURL = this.props.baseURL;
@@ -39,7 +58,7 @@ class NewToken extends Component {
 
     return (
 
-      <div className="container">
+      <div className="container mt-5">
       <button type="button" onClick={() => this.props.handleToggleView("off")} className="close" aria-label="Close">
       <span aria-hidden="true">&times;</span>
       </button>
@@ -56,15 +75,20 @@ class NewToken extends Component {
           {this.state.projectDescription[3] &&
             <a href={"https://"+this.state.projectDescription[3]}>{this.state.projectDescription[3]}</a>
           }
+          <br/>
+          <br/>
+
           {this.state.projectDescription[2] &&
             <p>{this.state.projectDescription[2]}</p>
           }
-
+          <br/>
+          <p style={{"fontSize":"12px"}}>{this.state.tokenHashes && this.state.tokenHashes.length===1?"Token hash:":"Token hashes:"} {this.state.tokenHashes && this.state.tokenHashes}</p>
+          <br />
           <p>Total Minted: {this.state.projectTokens && this.state.projectTokens.length} out of a maximum of {this.state.projectTokenDetails && this.state.projectTokenDetails[3]}</p>
 
           <br />
           <TwitterShareButton
-            url={'https://staging.artblocks.io/token/'+this.state.token}
+            url={'https://rinkeby.artblocks.io/token/'+this.state.token}
             options={{ text:"I just minted "+this.state.projectDescription[0]+" #"+(Number(this.props.token)-Number(this.state.projectId && this.state.projectId)*1000000)+" by "+this.state.projectDescription[1]+"!", via: 'artblocks_io' }}
             tag={'genArt'}
           />
@@ -79,7 +103,7 @@ class NewToken extends Component {
         <Col xs={12} md={6}>
         <CardDeck className="col d-flex justify-content-center">
 
-          <Card className='mt-4' style={{ width: '12rem' }} >
+          <Card className='mt-4' style={{ width: '18rem' }} >
 
             <Card.Body>
             {this.props.token &&
@@ -90,9 +114,27 @@ class NewToken extends Component {
             <div>
 
             <ButtonGroup size="md">
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 250, hide: 400 }}
+              overlay={viewImageToolTip}>
               <Button variant="light" onClick={()=> window.open(tokenImage(this.props.token), "_blank")}>View Image</Button>
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 250, hide: 400 }}
+              overlay={viewScriptToolTip}>
               <Button variant="light" onClick={()=> window.open(tokenGenerator(this.props.token), "_blank")}>Visit Script</Button>
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 250, hide: 400 }}
+              overlay={viewGalleryToolTip}>
+              <Button variant="light" as={Link} to={'/project/'+this.state.projectId}>{this.state.projectDescription && this.state.projectDescription[0]} Gallery</Button>
+            </OverlayTrigger>
             </ButtonGroup>
+
+
 
             </div>
             </div>
