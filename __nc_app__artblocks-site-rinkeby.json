@@ -180,7 +180,7 @@
     "path": "/Users/erick/apps/artblocks-site-migrate/public/favicon.ico"
   },
   "public/index.html": {
-    "mt": "Sun Nov 01 2020 22:05:20 GMT-0600 (Central Standard Time)",
+    "mt": "Mon Nov 16 2020 00:23:43 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/public/index.html"
@@ -210,7 +210,7 @@
     "path": "/Users/erick/apps/artblocks-site-migrate/public/robots.txt"
   },
   "server.js": {
-    "mt": "Sun Nov 01 2020 22:01:57 GMT-0600 (Central Standard Time)",
+    "mt": "Mon Nov 16 2020 00:23:31 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/server.js"
@@ -222,7 +222,7 @@
     "path": "/Users/erick/apps/artblocks-site-migrate/src/App.css"
   },
   "src/App.js": {
-    "mt": "Sat Nov 07 2020 18:33:06 GMT-0600 (Central Standard Time)",
+    "mt": "Sun Nov 15 2020 22:04:25 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/src/App.js"
@@ -234,7 +234,7 @@
     "path": "/Users/erick/apps/artblocks-site-migrate/src/App.test.js"
   },
   "src/ControlPanel.js": {
-    "mt": "Sun Nov 01 2020 16:16:57 GMT-0600 (Central Standard Time)",
+    "mt": "Sat Nov 14 2020 22:24:57 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/src/ControlPanel.js"
@@ -270,13 +270,13 @@
     "path": "/Users/erick/apps/artblocks-site-migrate/src/Nav.js"
   },
   "src/NewToken.js": {
-    "mt": "Sat Nov 07 2020 21:30:42 GMT-0600 (Central Standard Time)",
+    "mt": "Sun Nov 15 2020 23:22:06 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/src/NewToken.js"
   },
   "src/Project.js": {
-    "mt": "Thu Nov 05 2020 22:07:38 GMT-0600 (Central Standard Time)",
+    "mt": "Sun Nov 15 2020 22:10:13 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/src/Project.js"
@@ -294,13 +294,13 @@
     "path": "/Users/erick/apps/artblocks-site-migrate/src/ProjectGallery.js"
   },
   "src/UserGallery.js": {
-    "mt": "Sun Nov 01 2020 22:48:05 GMT-0600 (Central Standard Time)",
+    "mt": "Sun Nov 15 2020 22:10:06 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/src/UserGallery.js"
   },
   "src/ViewToken.js": {
-    "mt": "Sat Nov 07 2020 21:31:35 GMT-0600 (Central Standard Time)",
+    "mt": "Sun Nov 15 2020 23:08:09 GMT-0600 (Central Standard Time)",
     "exists": true,
     "state": 1,
     "path": "/Users/erick/apps/artblocks-site-migrate/src/ViewToken.js"

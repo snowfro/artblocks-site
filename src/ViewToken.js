@@ -8,7 +8,8 @@ import './ProjectGallery.css';
 class ViewToken extends Component {
   constructor(props) {
     super(props)
-    this.state = {tokenURIInfo:'', token:this.props.token};
+    this.state = {tokenURIInfo:'', token:this.props.token, embed:false};
+    this.handleClickEmbed = this.handleClickEmbed.bind(this);
 
   }
 
@@ -24,6 +25,11 @@ class ViewToken extends Component {
     const ownerOfToken = await artBlocks.methods.ownerOf(this.props.token).call();
     const tokenHashes = await artBlocks.methods.showTokenHashes(this.props.token).call();
     this.setState({artBlocks, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo, projectId, ownerOfToken, tokenHashes});
+  }
+
+  handleClickEmbed(){
+    let embed = this.state.embed;
+    this.setState({embed:!embed});
   }
 
   render() {
@@ -46,6 +52,12 @@ class ViewToken extends Component {
       </Tooltip>
     );
 
+    const viewEmbedLink = (props) => (
+      <Tooltip id="button-tooltip" {...props}>
+      Copy the below link and paste it in the URL field for embedding in virtual platforms like <a href="https://www.cryptovoxels.com" rel="noopener noreferrer" target="_blank">Cryptovoxels</a>.
+      </Tooltip>
+    );
+
 
 
 
@@ -57,6 +69,10 @@ class ViewToken extends Component {
 
     function tokenGenerator(token){
       return baseURL+'/generator/'+token;
+    }
+
+    function tokenVox(token){
+      return baseURL+'/vox/'+token;
     }
 
     return (
@@ -90,7 +106,26 @@ class ViewToken extends Component {
             <p>Owned by <Link to={"/user/"+this.state.ownerOfToken}>{this.state.ownerOfToken.slice(0,10)}</Link></p>
           }
           <br />
+          {/*
           <p style={{"fontSize":"12px"}}>{this.state.tokenHashes && this.state.tokenHashes.length===1?"Token hash:":"Token hashes:"} {this.state.tokenHashes && this.state.tokenHashes}</p>
+          */}
+          {this.state.projectScriptDetails && (this.state.projectScriptDetails[0]==="vox" || this.state.projectScriptDetails[0]==="megavox") &&
+          <div>
+          <OverlayTrigger
+            placement="top"
+            delay={{ show: 250, hide: 6000 }}
+            overlay={viewEmbedLink}>
+            <Button variant='info btn-sm' onClick={this.handleClickEmbed}>Embed</Button>
+          </OverlayTrigger>
+          {this.state.embed &&
+            <div>
+            <br/>
+            <p>{tokenVox(this.state.token)}</p>
+            <br/>
+            </div>
+          }
+          </div>
+          }
           <br />
           <p>Total Minted: {this.state.projectTokens && this.state.projectTokens.length} out of a maximum of {this.state.projectTokenDetails && this.state.projectTokenDetails[3]}</p>
 
@@ -132,7 +167,7 @@ class ViewToken extends Component {
               placement="top"
               delay={{ show: 250, hide: 400 }}
               overlay={viewScriptToolTip}>
-              <Button variant="light" onClick={()=> window.open(tokenGenerator(this.state.token), "_blank")}>Visit Script</Button>
+              <Button variant="light" onClick={()=> window.open(tokenGenerator(this.state.token), "_blank")}>Live Script</Button>
             </OverlayTrigger>
             <OverlayTrigger
               placement="top"

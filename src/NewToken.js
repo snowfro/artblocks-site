@@ -9,7 +9,8 @@ import './ProjectGallery.css';
 class NewToken extends Component {
   constructor(props) {
     super(props)
-    this.state = {tokenURIInfo:'', token:this.props.token};
+    this.state = {tokenURIInfo:'', token:this.props.token, embed:false};
+    this.handleClickEmbed = this.handleClickEmbed.bind(this);
 
   }
 
@@ -22,6 +23,11 @@ class NewToken extends Component {
     const projectScriptDetails = await artBlocks.methods.projectScriptInfo(projectId).call();
     const projectURIInfo = await artBlocks.methods.projectURIInfo(projectId).call();
     this.setState({artBlocks, projectId, projectTokens, projectDescription, projectTokenDetails, projectScriptDetails, projectURIInfo});
+  }
+
+  handleClickEmbed(){
+    let embed = this.state.embed;
+    this.setState({embed:!embed});
   }
 
   render() {
@@ -44,6 +50,12 @@ class NewToken extends Component {
       </Tooltip>
     );
 
+    const viewEmbedLink = (props) => (
+      <Tooltip id="button-tooltip" {...props}>
+      Copy the below link and paste it in the URL field for embedding in virtual platforms like <a href="https://www.cryptovoxels.com" rel="noopener noreferrer" target="_blank">Cryptovoxels</a>.
+      </Tooltip>
+    );
+
 
 
     let baseURL = this.props.baseURL;
@@ -54,6 +66,10 @@ class NewToken extends Component {
 
     function tokenGenerator(token){
       return baseURL+'/generator/'+token;
+    }
+
+    function tokenVox(token){
+      return baseURL+'/vox/'+token;
     }
 
     return (
@@ -82,7 +98,26 @@ class NewToken extends Component {
             <p>{this.state.projectDescription[2]}</p>
           }
           <br/>
+          {this.state.projectScriptDetails && (this.state.projectScriptDetails[0]==="vox" || this.state.projectScriptDetails[0]==="megavox") &&
+          <div>
+          <OverlayTrigger
+            placement="top"
+            delay={{ show: 250, hide: 6000 }}
+            overlay={viewEmbedLink}>
+            <Button variant='info btn-sm' onClick={this.handleClickEmbed}>Embed</Button>
+          </OverlayTrigger>
+          {this.state.embed &&
+            <div>
+            <br/>
+            <p>{tokenVox(this.state.token)}</p>
+            <br/>
+            </div>
+          }
+          </div>
+          }
+          {/*
           <p style={{"fontSize":"12px"}}>{this.state.tokenHashes && this.state.tokenHashes.length===1?"Token hash:":"Token hashes:"} {this.state.tokenHashes && this.state.tokenHashes}</p>
+          */}
           <br />
           <p>Total Minted: {this.state.projectTokens && this.state.projectTokens.length} out of a maximum of {this.state.projectTokenDetails && this.state.projectTokenDetails[3]}</p>
 
@@ -124,13 +159,13 @@ class NewToken extends Component {
               placement="top"
               delay={{ show: 250, hide: 400 }}
               overlay={viewScriptToolTip}>
-              <Button variant="light" onClick={()=> window.open(tokenGenerator(this.props.token), "_blank")}>Visit Script</Button>
+              <Button variant="light" onClick={()=> window.open(tokenGenerator(this.props.token), "_blank")}>Live Script</Button>
             </OverlayTrigger>
             <OverlayTrigger
               placement="top"
               delay={{ show: 250, hide: 400 }}
               overlay={viewGalleryToolTip}>
-              <Button variant="light" as={Link} to={'/project/'+this.state.projectId}>{this.state.projectDescription && this.state.projectDescription[0]} Gallery</Button>
+              <Button variant="light" as={Link} onClick={()=>this.props.handleToggleView("off")} to={'/project/'+this.state.projectId}>{this.state.projectDescription && this.state.projectDescription[0]} Gallery</Button>
             </OverlayTrigger>
             </ButtonGroup>
 

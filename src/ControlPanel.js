@@ -135,6 +135,8 @@ class ControlPanel extends Component {
                     <option>processing</option>
                     <option>a-frame</option>
                     <option>threejs</option>
+                    <option>vox</option>
+                    <option>megavox</option>
                     <option>custom</option>
                   </Form.Control>
                   <Form.Label><b>Dynamic?</b></Form.Label>

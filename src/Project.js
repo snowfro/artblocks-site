@@ -609,7 +609,7 @@ const paginationBasic = (
                     <Button variant="light" disabled>#{Number(token)-Number(this.state.project)*1000000}</Button>
                     <Button as={Link} to={'/token/'+token} variant="light" onClick={() => this.props.handleToggleView("viewToken",token)}>Details</Button>
                     <Button variant="light" onClick={()=> window.open(tokenImage(token), "_blank")}>Image</Button>
-                    <Button variant="light" onClick={()=> window.open(tokenGenerator(token), "_blank")}>Script</Button>
+                    <Button variant="light" onClick={()=> window.open(tokenGenerator(token), "_blank")}>Live</Button>
                   </ButtonGroup>
 
 
@@ -781,6 +781,8 @@ const paginationBasic = (
                   <option>processing</option>
                   <option>a-frame</option>
                   <option>threejs</option>
+                  <option>vox</option>
+                  <option>megavox</option>
                   <option>custom</option>
                 </Form.Control>
                 <Form.Text className="text-muted">

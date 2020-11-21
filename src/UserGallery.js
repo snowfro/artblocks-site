@@ -126,7 +126,7 @@ class UserGallery extends Component {
                               <Button variant="light" disabled>#{Number(token)-Number(project)*1000000}</Button>
                               <Button as={Link} to={"/token/"+token} variant="light" onClick={() => this.props.handleToggleView("viewToken",token)}>Details</Button>
                               <Button variant="light" onClick={()=> window.open(tokenImage(token), "_blank")}>Image</Button>
-                              <Button variant="light" onClick={()=> window.open(tokenGenerator(token), "_blank")}>Script</Button>
+                              <Button variant="light" onClick={()=> window.open(tokenGenerator(token), "_blank")}>Live</Button>
                             </ButtonGroup>
                             </div>
                           </Card.Body>

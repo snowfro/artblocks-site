@@ -7,14 +7,14 @@ const pathToIndex = path.join(__dirname, 'build/index.html');
 app.get('/token/:tokenId', (req, res) => {
     const raw = fs.readFileSync(pathToIndex, "utf8");
     const token = req.params.tokenId;
-    const updated1 = raw.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${token}`));
-    const updated2 = updated1.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${token}`));
-    const updated3 = updated2.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${token}`));
-    const updated4 = updated3.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${token}`));
+    const updated1 = raw.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${token}`));
+    const updated2 = updated1.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${token}`));
+    const updated3 = updated2.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${token}`));
+    const updated4 = updated3.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${token}`));
 
     res.send(updated4);
 })
@@ -22,14 +22,14 @@ app.get('/token/:tokenId', (req, res) => {
 app.get('/project/:projectId', (req, res) => {
     const raw = fs.readFileSync(pathToIndex, "utf8");
     const project = req.params.projectId;
-    const updated1 = raw.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${project*1000000}`));
-    const updated2 = updated1.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${project*1000000}`));
-    const updated3 = updated2.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${project*1000000}`));
-    const updated4 = updated3.replace('https://stagingapi.artblocks.io/image/2000007', (
-        `https://stagingapi.artblocks.io/image/${project*1000000}`));
+    const updated1 = raw.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${project*1000000}`));
+    const updated2 = updated1.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${project*1000000}`));
+    const updated3 = updated2.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${project*1000000}`));
+    const updated4 = updated3.replace('https://rinkebyapi.artblocks.io/image/2000007', (
+        `https://rinkebyapi.artblocks.io/image/${project*1000000}`));
 
     res.send(updated4);
 })
